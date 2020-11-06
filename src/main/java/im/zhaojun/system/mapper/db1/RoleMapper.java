@@ -1,4 +1,4 @@
-package im.zhaojun.system.mapper;
+package im.zhaojun.system.mapper.db1;
 
 import im.zhaojun.system.model.Role;
 import org.apache.ibatis.annotations.Mapper;

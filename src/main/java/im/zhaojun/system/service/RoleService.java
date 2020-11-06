@@ -2,10 +2,10 @@ package im.zhaojun.system.service;
 
 import com.github.pagehelper.PageHelper;
 import im.zhaojun.common.shiro.realm.UserNameRealm;
-import im.zhaojun.system.mapper.RoleMapper;
-import im.zhaojun.system.mapper.RoleMenuMapper;
-import im.zhaojun.system.mapper.RoleOperatorMapper;
-import im.zhaojun.system.mapper.UserRoleMapper;
+import im.zhaojun.system.mapper.db1.RoleMapper;
+import im.zhaojun.system.mapper.db1.RoleMenuMapper;
+import im.zhaojun.system.mapper.db1.RoleOperatorMapper;
+import im.zhaojun.system.mapper.db1.UserRoleMapper;
 import im.zhaojun.system.model.Role;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

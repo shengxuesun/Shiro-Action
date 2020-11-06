@@ -2,7 +2,7 @@ package im.zhaojun.system.service;
 
 import com.github.pagehelper.PageHelper;
 import im.zhaojun.common.util.ShiroUtil;
-import im.zhaojun.system.mapper.LoginLogMapper;
+import im.zhaojun.system.mapper.db1.LoginLogMapper;
 import im.zhaojun.system.model.LoginLog;
 import im.zhaojun.system.model.User;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package im.zhaojun.system.service;
 
-import im.zhaojun.system.mapper.RoleOperatorMapper;
+import im.zhaojun.system.mapper.db1.RoleOperatorMapper;
 import im.zhaojun.system.model.RoleOperator;
 import org.springframework.stereotype.Service;
 

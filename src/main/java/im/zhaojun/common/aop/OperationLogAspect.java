@@ -3,7 +3,7 @@ package im.zhaojun.common.aop;
 import im.zhaojun.common.annotation.OperationLog;
 import im.zhaojun.common.util.IPUtils;
 import im.zhaojun.common.util.ShiroUtil;
-import im.zhaojun.system.mapper.SysLogMapper;
+import im.zhaojun.system.mapper.db1.SysLogMapper;
 import im.zhaojun.system.model.SysLog;
 import im.zhaojun.system.model.User;
 import org.apache.shiro.SecurityUtils;

@@ -88,7 +88,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <!--lombok插件 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <!-- 数据库相关, 驱动、mybatis、分页插件 -->
         <dependency>
             <groupId>mysql</groupId>

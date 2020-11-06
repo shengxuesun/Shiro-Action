@@ -1,4 +1,4 @@
-package im.zhaojun.system.mapper;
+package im.zhaojun.system.mapper.db2;
 
 import im.zhaojun.system.model.Dept;
 import org.apache.ibatis.annotations.Mapper;
@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface DeptMapper {
+public interface CustCardInfoMapper {
 
     int deleteByPrimaryKey(Integer deptId);
 

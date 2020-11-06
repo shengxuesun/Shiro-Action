@@ -1,9 +1,9 @@
 package im.zhaojun.system.service;
 
 import im.zhaojun.common.util.TreeUtil;
-import im.zhaojun.system.mapper.MenuMapper;
-import im.zhaojun.system.mapper.OperatorMapper;
-import im.zhaojun.system.mapper.RoleOperatorMapper;
+import im.zhaojun.system.mapper.db1.MenuMapper;
+import im.zhaojun.system.mapper.db1.OperatorMapper;
+import im.zhaojun.system.mapper.db1.RoleOperatorMapper;
 import im.zhaojun.system.model.Menu;
 import im.zhaojun.system.model.Operator;
 import org.springframework.stereotype.Service;

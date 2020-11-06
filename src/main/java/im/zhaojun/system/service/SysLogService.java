@@ -1,7 +1,7 @@
 package im.zhaojun.system.service;
 
 import com.github.pagehelper.PageHelper;
-import im.zhaojun.system.mapper.SysLogMapper;
+import im.zhaojun.system.mapper.db1.SysLogMapper;
 import im.zhaojun.system.model.SysLog;
 import org.springframework.stereotype.Service;
 

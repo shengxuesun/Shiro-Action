@@ -1,6 +1,6 @@
 package im.zhaojun.system.service;
 
-import im.zhaojun.system.mapper.DeptMapper;
+import im.zhaojun.system.mapper.db1.DeptMapper;
 import im.zhaojun.system.model.Dept;
 import org.springframework.stereotype.Service;
 

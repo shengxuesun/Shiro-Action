@@ -1,7 +1,7 @@
 package im.zhaojun.system.service;
 
 import im.zhaojun.common.constants.AuthcTypeEnum;
-import im.zhaojun.system.mapper.UserAuthsMapper;
+import im.zhaojun.system.mapper.db1.UserAuthsMapper;
 import im.zhaojun.system.model.UserAuths;
 import org.springframework.stereotype.Service;
 
