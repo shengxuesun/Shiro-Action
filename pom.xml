@@ -95,6 +95,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--添加Oracle驱动依赖 -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8-production</artifactId>
+            <version>19.8.0.0</version>
+            <type>pom</type>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -166,5 +173,16 @@
             </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>PBG-release</id>
+            <name>PBG-release</name>
+            <url>http://af.hikvision.com.cn:80/artifactory/maven-pbg-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>PBG-snapshot</id>
+            <name>PBG-snapshot</name>
+            <url>http://af.hikvision.com.cn/artifactory/maven-pbg-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
