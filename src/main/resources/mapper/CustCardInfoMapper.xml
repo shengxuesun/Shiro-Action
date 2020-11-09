@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="im.zhaojun.system.mapper.db1.CustCardInfoMapper">
+<mapper namespace="im.zhaojun.system.mapper.db2.CustCardInfoMapper">
 
     <resultMap id="BaseResultMap" type="im.zhaojun.system.model.CustCardInfo">
         <!--
@@ -39,10 +39,26 @@
         -->
         select
         <include refid="Base_Column_List"/>
-        from dept
-        where dept_id = #{deptId,jdbcType=INTEGER}
+        from custcardinfo
+        where cusempno = #{deptId,jdbcType=INTEGER}
     </select>
-
+    <select id="selectAllInfo" resultMap="BaseResultMap">
+        select STUEMPNO,
+        CUSTNAME,
+        CARDNO,
+        CARDSTATUS,
+        STATUSNAME,
+        SHOWCARDNO
+        from V_CUSTCARDINFO
+<!--        <if test="pageNo!=null and pageSize!=null">-->
+<!--            <![CDATA[)TMP_PAGE) where ROW_ID <=${pageSize*pageNo} AND ROW_ID > ${pageSize*(pageNo-1)}]]>-->
+<!--        </if>-->
+        <where>
+            <if test="stuEmpNo != null and stuEmpNo != ''">
+                AND STUEMPNO = #{stuEmpNo}
+            </if>
+        </where>
+    </select>
 
 
 </mapper>

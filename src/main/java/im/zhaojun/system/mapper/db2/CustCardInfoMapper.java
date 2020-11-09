@@ -1,30 +1,18 @@
 package im.zhaojun.system.mapper.db2;
 
-import im.zhaojun.system.model.Dept;
+import im.zhaojun.system.model.CustCardInfo;
+import im.zhaojun.system.model.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface CustCardInfoMapper {
 
-    int deleteByPrimaryKey(Integer deptId);
-
-    int insert(Dept dept);
-
-    Dept selectByPrimaryKey(Integer deptId);
-
-    int updateByPrimaryKey(Dept dept);
-
-    List<Dept> selectByParentId(@Param("parentId") Integer parentId);
-
-    List<Dept> selectAllTree();
-
-    List<Integer> selectChildrenIDByPrimaryKey(@Param("deptId") Integer deptId);
-
-    int selectMaxOrderNum();
-
-    int swapSort(@Param("currentId") Integer currentId, @Param("swapId") Integer swapId);
+    CustCardInfo selectByPrimaryKey(Integer stuempno);
+    /**
+     * 获取所有一卡通信息
+     */
+    List<CustCardInfo> selectAllInfo(CustCardInfo custCardInfoQuery);
 
 }
