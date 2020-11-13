@@ -35,6 +35,12 @@ public class IndexController {
     @Resource
     private CustCardInfoService custCardInfoService;
 
+    @Resource
+    private OrganizationService organizationService;
+
+    @Resource
+    private PersonService personService;
+
     @GetMapping(value = {"/", "/main"})
     public String index(Model model) {
         List<Menu> menuTreeVOS = menuService.selectCurrentUserMenuTree();

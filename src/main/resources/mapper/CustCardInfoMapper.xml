@@ -13,8 +13,44 @@
         <result column="CARDSTATUS" jdbcType="INTEGER" property="cardStatus"/>
         <result column="STATUSNAME" jdbcType="VARCHAR" property="statusName"/>
         <result column="SHOWCARDNO" jdbcType="VARCHAR" property="showCardNo"/>
+        <result column="cardPhyId" jdbcType="VARCHAR" property="cardPhyId"/>
+        <result column="expireDate" jdbcType="VARCHAR" property="expireDate"/>
+        <result column="openDate" jdbcType="VARCHAR" property="openDate"/>
+        <result column="cardVerNo" jdbcType="VARCHAR" property="cardVerNo"/>
+        <result column="cardType" jdbcType="VARCHAR" property="cardType"/>
+        <result column="cardTypeName" jdbcType="VARCHAR" property="cardTypeName"/>
+        <result column="custId" jdbcType="VARCHAR" property="custId"/>
+        <result column="custType" jdbcType="VARCHAR" property="custType"/>
+        <result column="custTypeName" jdbcType="VARCHAR" property="custTypeName"/>
+        <result column="deptCode" jdbcType="VARCHAR" property="deptCode"/>
+        <result column="deptName" jdbcType="VARCHAR" property="deptName"/>
+        <result column="specialtyCode" jdbcType="VARCHAR" property="specialtyCode"/>
+        <result column="specialtyName" jdbcType="VARCHAR" property="specialtyName"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="idType" jdbcType="VARCHAR" property="idType"/>
+        <result column="idTypeName" jdbcType="VARCHAR" property="idTypeName"/>
+        <result column="idNo" jdbcType="VARCHAR" property="idNo"/>
+        <result column="areaCode" jdbcType="VARCHAR" property="areaCode"/>
+        <result column="areaName" jdbcType="VARCHAR" property="areaName"/>
+        <result column="classCode" jdbcType="VARCHAR" property="classCode"/>
+        <result column="className" jdbcType="VARCHAR" property="className"/>
+        <result column="countryCode" jdbcType="VARCHAR" property="countryCode"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="nationCode" jdbcType="VARCHAR" property="nationCode"/>
+        <result column="nation" jdbcType="VARCHAR" property="nation"/>
+        <result column="inDate" jdbcType="VARCHAR" property="inDate"/>
+        <result column="outDate" jdbcType="VARCHAR" property="outDate"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="addr" jdbcType="VARCHAR" property="addr"/>
+        <result column="zipCode" jdbcType="VARCHAR" property="zipCode"/>
+        <result column="cardUpdTime" jdbcType="VARCHAR" property="cardUpdTime"/>
+        <result column="custUpdTime" jdbcType="VARCHAR" property="custUpdTime"/>
+        <result column="photo" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler" property="photo"/>
+        <result column="photoExactTime" jdbcType="VARCHAR" property="photoExactTime"/>
+        <result column="id" jdbcType="VARCHAR" property="id"/>
     </resultMap>
-
 
     <resultMap id="TreeBaseResultMap" type="im.zhaojun.system.model.CustCardInfo">
         <!--
@@ -48,7 +84,44 @@
         CARDNO,
         CARDSTATUS,
         STATUSNAME,
-        SHOWCARDNO
+        SHOWCARDNO,
+        cardPhyId,
+        expireDate,
+        openDate,
+        cardVerNo,
+        cardType,
+        cardTypeName,
+        custId,
+        custType,
+        custTypeName,
+        deptCode,
+        deptName,
+        specialtyCode,
+        specialtyName,
+        sex,
+        idType,
+        idTypeName,
+        idNo,
+        areaCode,
+        areaName,
+        classCode,
+        className,
+        countryCode,
+        country,
+        email,
+        nationCode,
+        nation,
+        inDate,
+        outDate,
+        tel,
+        mobile,
+        addr,
+        zipCode,
+        cardUpdTime,
+        custUpdTime,
+        photo,
+        photoExactTime,
+        id
         from V_CUSTCARDINFO
 <!--        <if test="pageNo!=null and pageSize!=null">-->
 <!--            <![CDATA[)TMP_PAGE) where ROW_ID <=${pageSize*pageNo} AND ROW_ID > ${pageSize*(pageNo-1)}]]>-->
@@ -58,6 +131,46 @@
                 AND STUEMPNO = #{stuEmpNo}
             </if>
         </where>
+    </select>
+    <select id="organizationList" resultMap="BaseResultMap">
+select
+        deptCode,
+        deptName
+        from V_CUSTCARDINFO
+        where deptName is not null and deptCode != 1
+group by  deptCode, deptName
+Union all
+        select
+        specialtycode as deptCode,
+        specialtyName as deptName
+        from V_CUSTCARDINFO
+        where specialtyName is not null
+group by  specialtyCode, specialtyName
+    </select>
+
+
+    <select id="personList" resultMap="BaseResultMap">
+        select
+            custid,
+            custtype,
+            custname,
+            deptcode,
+            deptname,
+            specialtycode,
+            specialtyname,
+            sex,
+            mobile,
+            tel,
+            email,
+            idtype,
+            idtypename,
+            idno,
+            stuempno
+        from V_CUSTCARDINFO
+    </select>
+
+    <select id="photoList" resultMap="BaseResultMap">
+        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800 and rownum &lt; 10
     </select>
 
 

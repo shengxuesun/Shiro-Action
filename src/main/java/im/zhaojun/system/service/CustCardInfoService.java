@@ -3,7 +3,6 @@ package im.zhaojun.system.service;
 import com.github.pagehelper.PageHelper;
 import im.zhaojun.system.mapper.db2.CustCardInfoMapper;
 import im.zhaojun.system.model.CustCardInfo;
-import im.zhaojun.system.model.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

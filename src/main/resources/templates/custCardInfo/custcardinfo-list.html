@@ -47,7 +47,7 @@
 <!--                    </div>-->
                     <div class="layui-col-md12">
                         <div class="layui-card">
-                            <div class="layui-card-header" id="card-header">部门列表</div>
+                            <div class="layui-card-header" id="card-header">一卡通视图信息列表</div>
                             <div class="layui-card-body">
                                 <table class="layui-hide" id="custcardinfo-table"></table>
                             </div>
@@ -59,43 +59,14 @@
     </div>
 
     <script type="text/html" id="toolbar">
-        <shiro:hasPermission name="dept:add">
-            <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="add">
-                <i class="zadmin-icon zadmin-icon-xinzeng zadmin-oper-area"></i>
-                新增
-            </button>
-        </shiro:hasPermission>
+
     </script>
 
 
     <script type="text/html" id="column-toolbar">
 
-        <shiro:hasPermission name="dept:update">
-            <a lay-event="edit">
-                <i class="zadmin-icon zadmin-icon-edit-square zadmin-oper-area zadmin-blue" title="编辑"></i>
-            </a>
-        </shiro:hasPermission>
 
-        <shiro:hasPermission name="dept:delete">
-            <a lay-event="del">
-                <i class="zadmin-icon zadmin-icon-delete zadmin-oper-area zadmin-red" title="删除"></i>
-            </a>
-        </shiro:hasPermission>
 
-        <shiro:lacksPermission name="dept:update, dept:delete">
-            <i class="zadmin-icon zadmin-icon-wuquanxian zadmin-oper-area zadmin-red"></i>无权限
-        </shiro:lacksPermission>
-
-    </script>
-
-    <script type="text/html" id="column-toolbar-sort">
-        <i class="zadmin-icon zadmin-icon-shangyimian zadmin-oper-area zadmin-blue" lay-event="up" title="上移"></i>
-
-        <i class="zadmin-icon zadmin-icon-xiayimian zadmin-oper-area zadmin-blue" lay-event="down" title="下移"></i>
-
-        <i class="zadmin-icon zadmin-icon-zhidingmian zadmin-oper-area zadmin-blue" lay-event="top" title="置顶"></i>
-
-        <i class="zadmin-icon zadmin-icon-zhidimian zadmin-oper-area zadmin-blue" lay-event="bottom" title="置底"></i>
     </script>
 
     <script th:src="@{/lib/jquery/jquery.min.js}"></script>
@@ -103,7 +74,6 @@
     <script th:src="@{/js/common.js}"></script>
 
     <script>
-
         var parentDeptId = 0;
 
         // 获取有没有删除, 更新, 和新增的权限.
@@ -131,99 +101,65 @@
 
             tablePlug.smartReload.enable(true);
 
-            var DTree = dtree.render({
-                elem: "#deptTree",
-                url: "/dept/tree/root",
-                dataStyle: "layuiStyle",
-                initLevel: 5,   // 初始打开节点级别
-                method: "GET",
-                dot: false,     // 圆点是否显示
-                toolbar: true,  // 右键工具栏
-                menubar: true,  // 树上方工具栏, 展开、收缩、刷新、搜索等
-                toolbarShow: [],
-                toolbarScroll: "#toolbarDiv",
-                toolbarExt: [
-                    {
-                        toolbarId: "add",
-                        icon: "dtree-icon-roundadd",
-                        title: "添加子节点",
-                        handler: function (node, $div) {
-                            add(node.nodeId);
-                        }
-                    },
-                    {
-                        toolbarId: "edit",
-                        icon: "dtree-icon-bianji",
-                        title: "编辑",
-                        handler: function (node, $div) {
-                            edit(node.nodeId);
-                        }
-                    },
-                    {
-                        toolbarId: "remove",
-                        icon: "dtree-icon-roundclose",
-                        title: "删除",
-                        handler: function (node, $div) {
-                            del(node.nodeId);
-                        }
-                    }
-                ],
-                response: {
-                    statusCode: 0,
-                    message: "msg",
-                    treeId: "id",
-                    parentId: "parentId",
-                    title: "name"
-                },
-                toolbarFun:{
-                    loadToolbarBefore: function(buttons, param, $div){
-                        if(param.level === "1"){ // 如果是顶级节点, 则取消编辑和删除功能.
-                            buttons.edit = "";
-                            buttons.remove = "";
-                        }
-                        if (!hasDeptAdd) {
-                            buttons.add = "";
-                        }
-                        if (!hasDeptDelete) {
-                            buttons.remove = "";
-                        }
-                        if (!hasDeptUpdate) {
-                            buttons.edit = "";
-                        }
-                        return buttons;
-                    }
-                }
-            });
-
             table.render({
                 elem: '#custcardinfo-table'
                 , url: '/custCardInfo/list'
                 , page: true
-                , cellMinWidth: 95
                 , toolbar: '#toolbar'
                 , smartReloadModel: true
                 , cols: [
                     [
-                        {type: 'numbers', title: '序号', width: "5%"}
+                        {type: 'numbers', title: '序号', width: "3%"}
                         , {field: 'stuEmpNo', title: '学工号', hide: false}
                         , {field: 'custName', title: '姓名'}
                         , {field: 'cardNo', title: '卡号'}
                         , {field: 'cardStatus', title: '卡状态'}
                         , {field: 'statusName', title: '卡状态注释'}
-                        , {title: '操作', align: 'center', toolbar: '#column-toolbar'}
+                        , {field: 'showCardNo', title: '显示卡号'}
+                        ,{field:'cardPhyId',title:'cardPhyId'}
+                        ,{field:'expireDate',title:'expireDate'}
+                        ,{field:'openDate',title:'openDate'}
+                        ,{field:'cardVerNo',title:'cardVerNo'}
+                        ,{field:'cardType',title:'cardType'}
+                        ,{field:'cardTypeName',title:'cardTypeName'}
+                        ,{field:'custId',title:'custId'}
+                        ,{field:'custType',title:'custType'}
+                        ,{field:'custTypeName',title:'custTypeName'}
+                        ,{field:'deptCode',title:'deptCode'}
+                        ,{field:'deptName',title:'deptName'}
+                        ,{field:'specialtyCode',title:'specialtyCode'}
+                        ,{field:'specialtyName',title:'specialtyName'}
+                        ,{field:'sex',title:'sex'}
+                        ,{field:'idType',title:'idType'}
+                        ,{field:'idTypeName',title:'idTypeName'}
+                        ,{field:'idNo',title:'idNo'}
+                        ,{field:'areaCode',title:'areaCode'}
+                        ,{field:'areaName',title:'areaName'}
+                        ,{field:'classCode',title:'classCode'}
+                        ,{field:'className',title:'className'}
+                        ,{field:'countryCode',title:'countryCode'}
+                        ,{field:'country',title:'country'}
+                        ,{field:'email',title:'email'}
+                        ,{field:'nationCode',title:'nationCode'}
+                        ,{field:'nation',title:'nation'}
+                        ,{field:'inDate',title:'inDate'}
+                        ,{field:'outDate',title:'outDate'}
+                        ,{field:'tel',title:'tel'}
+                        ,{field:'mobile',title:'mobile'}
+                        ,{field:'addr',title:'addr'}
+                        ,{field:'zipCode',title:'zipCode'}
+                        ,{field:'cardUpdTime',title:'cardUpdTime'}
+                        ,{field:'custUpdTime',title:'custUpdTime'}
+                        ,{field:'photo',title:'photo',templet: function(d){
+                            // let blob = new Blob([d.photo],  {type: 'image/jpeg;charset=GBK'});
+                            return '<img src="data:image/jpeg;base64,'+ d.photo +'"/>'
+                        }}
+                        ,{field:'photoExactTime',title:'photoExactTime'}
+                        ,{field:'id',title:'id'}
                     ]
                 ]
             });
 
-            dtree.on("node('deptTree')", function (obj) {
-                table.reload('dept-table', {
-                    where: {
-                        parentId: obj.param.nodeId
-                    }
-                });
-                parentDeptId = obj.param.nodeId;
-                $("#card-header").html("[" + obj.param.context + "]的子部门");
-            });
 
             table.on('toolbar', function (obj) {
                 var event = obj.event;
@@ -268,63 +204,12 @@
             });
 
 
-            function add(parentDeptId) {
-                layer.open({
-                    content: "/dept?parentId=" + parentDeptId,
-                    title: "添加子节点",
-                    area: ['40%', '85%'],
-                    type: 2,
-                    maxmin: true,
-                    shadeClose: true,
-                    end: function () {
-                        refresh();
-                    }
-                });
-            }
-
-            function swapSort(currentId, swapId) {
-                $.post('/dept/swap', {currentId: currentId, swapId: swapId}, function (data) {
-                    layer.msg("交换成功");
-                    handlerResult(data, function () {
-                        refresh();
-                    });
-                });
-            }
-
-            function del(id) {
-                layer.confirm("你确定删除数据吗？如果存在下级节点则一并删除！", {icon: 3, title: '提示'},
-                    function (index) {
-                        $.post('/dept/' + id, {_method: "DELETE"}, function (data) {
-                            layer.close(index);
-                            handlerResult(data, function () {
-                                refresh();
-                            });
-                        });
-                    }, function (index) {
-                        layer.close(index);
-                    }
-                );
-            }
-
             function refresh() {
-                table.reload("dept-table");
+                table.reload("custcardinfo-table");
                 DTree.menubarMethod().refreshTree();
             }
 
 
-            function edit(id) {
-                layer.open({
-                    content: '/dept/' + id,
-                    title: "编辑",
-                    area: ['40%', '85%'],
-                    type: 2,
-                    maxmin: true,
-                    shadeClose: true,
-                    end: function () {
-                        refresh();
-                    }
-                });
-            }
         });
     </script>
 </body>

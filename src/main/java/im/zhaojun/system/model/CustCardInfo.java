@@ -22,9 +22,44 @@ public class CustCardInfo implements Serializable {
 
     private String showCardNo;
 
-    private Integer pageNo = 1;
+    private String cardPhyId;
+    private String expireDate;
+    private String openDate;
+    private String cardVerNo;
+    private String cardType;
+    private String cardTypeName;
+    private String custId;
+    private String custType;
+    private String custTypeName;
+    private String deptCode;
+    private String deptName;
+    private String specialtyCode;
+    private String specialtyName;
+    private String sex;
+    private String idType;
+    private String idTypeName;
+    private String idNo;
+    private String areaCode;
+    private String areaName;
+    private String classCode;
+    private String className;
+    private String countryCode;
+    private String country;
+    private String email;
+    private String nationCode;
+    private String nation;
+    private String inDate;
+    private String outDate;
+    private String tel;
+    private String mobile;
+    private String addr;
+    private String zipCode;
+    private String cardUpdTime;
+    private String custUpdTime;
+    private byte[] photo;
+    private String photoExactTime;
+    private String id;
 
-    private Integer pageSize = 10;
     @Override
     public String toString() {
         return "CustCardInfo{" +
