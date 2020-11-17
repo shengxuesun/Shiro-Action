@@ -49,6 +49,25 @@
                         <div class="layui-card">
                             <div class="layui-card-header" id="card-header">一卡通视图信息列表</div>
                             <div class="layui-card-body">
+                                <form class="layui-form zadmin-search-area input">
+                                    <div class="layui-form-item">
+                                        <div class="layui-inline">
+                                            <label for="custName" class="layui-form-label">姓名</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="custName" autocomplete="off"
+                                                       id="custName" class="layui-input">
+                                            </div>
+                                            <label for="idNo" class="layui-form-label">身份证号</label>
+                                            <div class="layui-input-inline">
+                                                <input type="text" name="idNo" autocomplete="off"
+                                                       id="idNo" class="layui-input">
+                                            </div>
+                                            <button lay-submit="" lay-filter="search" class="layui-btn layui-btn-sm layui-btn-primary table-action">
+                                                <i class="zadmin-icon zadmin-icon-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                                 <table class="layui-hide" id="custcardinfo-table"></table>
                             </div>
                         </div>
@@ -65,8 +84,18 @@
 
     <script type="text/html" id="column-toolbar">
 
-
-
+            <a lay-event="syncSinglePerson">
+                <i class="layui-icon layui-icon-friends zadmin-oper-area zadmin-blue" title="同步用户"></i>
+            </a>
+            <a lay-event="updateSinglePerson">
+                <i class="layui-icon layui-icon-edit zadmin-oper-area zadmin-blue" title="修改用户"></i>
+            </a>
+            <a lay-event="syncSinglePhoto">
+                <i class="layui-icon layui-icon-camera zadmin-oper-area zadmin-blue" title="同步人脸"></i>
+            </a>
+            <a lay-event="syncSingleCard">
+                <i class="layui-icon layui-icon-templeate-1 zadmin-oper-area zadmin-blue" title="同步卡片"></i>
+            </a>
     </script>
 
     <script th:src="@{/lib/jquery/jquery.min.js}"></script>
@@ -74,33 +103,22 @@
     <script th:src="@{/js/common.js}"></script>
 
     <script>
-        var parentDeptId = 0;
-
-        // 获取有没有删除, 更新, 和新增的权限.
-        var hasDeptDelete = false;
-        var hasDeptUpdate = false;
-        var hasDeptAdd = false;
-
-        $.get('/security/hasPermission/dept:update', function (data) {
-            hasDeptUpdate = data.data;
-        });
-        $.get('/security/hasPermission/dept:delete', function (data) {
-            hasDeptDelete = data.data;
-        });
-        $.get('/security/hasPermission/dept:add', function (data) {
-            hasDeptAdd = data.data;
-        });
-
         layui.config({
             base: '/lib/layui/extend/'
         }).use(['jquery', 'dtree', 'layer', 'table', 'element', 'tablePlug'], function () {
             var dtree = layui.dtree;
             var layer = layui.layer;
             var table = layui.table;
+            var form = layui.form;
             var tablePlug = layui.tablePlug;
 
             tablePlug.smartReload.enable(true);
-
+            form.on('submit(search)', function (form) {
+                table.reload('custcardinfo-table', {
+                    where: form.field
+                });
+                return false;
+            });
             table.render({
                 elem: '#custcardinfo-table'
                 , url: '/custCardInfo/list'
@@ -109,53 +127,58 @@
                 , smartReloadModel: true
                 , cols: [
                     [
+
                         {type: 'numbers', title: '序号', width: "3%"}
-                        , {field: 'stuEmpNo', title: '学工号', hide: false}
+                        ,{field:'custId',title:'custId'}
+                        // , {field: 'stuEmpNo', title: '学工号', hide: false}
                         , {field: 'custName', title: '姓名'}
-                        , {field: 'cardNo', title: '卡号'}
-                        , {field: 'cardStatus', title: '卡状态'}
-                        , {field: 'statusName', title: '卡状态注释'}
-                        , {field: 'showCardNo', title: '显示卡号'}
+                        // , {field: 'cardNo', title: '卡号'}
+                        // , {field: 'cardStatus', title: '卡状态'}
+                        // , {field: 'statusName', title: '卡状态注释'}
+                        // , {field: 'showCardNo', title: '显示卡号'}
                         ,{field:'cardPhyId',title:'cardPhyId'}
                         ,{field:'expireDate',title:'expireDate'}
-                        ,{field:'openDate',title:'openDate'}
-                        ,{field:'cardVerNo',title:'cardVerNo'}
-                        ,{field:'cardType',title:'cardType'}
-                        ,{field:'cardTypeName',title:'cardTypeName'}
-                        ,{field:'custId',title:'custId'}
-                        ,{field:'custType',title:'custType'}
-                        ,{field:'custTypeName',title:'custTypeName'}
-                        ,{field:'deptCode',title:'deptCode'}
-                        ,{field:'deptName',title:'deptName'}
-                        ,{field:'specialtyCode',title:'specialtyCode'}
-                        ,{field:'specialtyName',title:'specialtyName'}
-                        ,{field:'sex',title:'sex'}
-                        ,{field:'idType',title:'idType'}
-                        ,{field:'idTypeName',title:'idTypeName'}
-                        ,{field:'idNo',title:'idNo'}
-                        ,{field:'areaCode',title:'areaCode'}
-                        ,{field:'areaName',title:'areaName'}
-                        ,{field:'classCode',title:'classCode'}
-                        ,{field:'className',title:'className'}
-                        ,{field:'countryCode',title:'countryCode'}
-                        ,{field:'country',title:'country'}
-                        ,{field:'email',title:'email'}
-                        ,{field:'nationCode',title:'nationCode'}
-                        ,{field:'nation',title:'nation'}
-                        ,{field:'inDate',title:'inDate'}
-                        ,{field:'outDate',title:'outDate'}
-                        ,{field:'tel',title:'tel'}
-                        ,{field:'mobile',title:'mobile'}
-                        ,{field:'addr',title:'addr'}
-                        ,{field:'zipCode',title:'zipCode'}
-                        ,{field:'cardUpdTime',title:'cardUpdTime'}
-                        ,{field:'custUpdTime',title:'custUpdTime'}
-                        ,{field:'photo',title:'photo',templet: function(d){
-                            // let blob = new Blob([d.photo],  {type: 'image/jpeg;charset=GBK'});
-                            return '<img src="data:image/jpeg;base64,'+ d.photo +'"/>'
-                        }}
-                        ,{field:'photoExactTime',title:'photoExactTime'}
-                        ,{field:'id',title:'id'}
+                        // ,{field:'openDate',title:'openDate'}
+                        // ,{field:'cardVerNo',title:'cardVerNo'}
+                        // ,{field:'cardType',title:'cardType'}
+                        // ,{field:'cardTypeName',title:'cardTypeName'}
+
+                        // ,{field:'custType',title:'身份'}
+                        ,{field:'custTypeName',title:'身份'}
+                        // ,{field:'deptCode',title:'deptCode'}
+                        // ,{field:'deptName',title:'部门'}
+                        // ,{field:'specialtyCode',title:'specialtyCode'}
+                        // ,{field:'specialtyName',title:'专业'}
+                        // ,{field:'sex',title:'性别',templet: function(d){
+                        //     return d.sex == 1?'男':'女';
+                        // }}
+                        // ,{field:'idType',title:'idType'}
+                        // ,{field:'idTypeName',title:'ID名'}
+                        // ,{field:'idNo',title:'ID号'}
+                        // ,{field:'areaCode',title:'areaCode'}
+                        // ,{field:'areaName',title:'areaName'}
+                        // ,{field:'classCode',title:'classCode'}
+                        // ,{field:'className',title:'className'}
+                        // ,{field:'countryCode',title:'countryCode'}
+                        // ,{field:'country',title:'country'}
+                        // ,{field:'email',title:'email'}
+                        // ,{field:'nationCode',title:'nationCode'}
+                        // ,{field:'nation',title:'nation'}
+                        // ,{field:'inDate',title:'inDate'}
+                        // ,{field:'outDate',title:'outDate'}
+                        // ,{field:'tel',title:'tel'}
+                        // ,{field:'mobile',title:'mobile'}
+                        // ,{field:'addr',title:'addr'}
+                        // ,{field:'zipCode',title:'zipCode'}
+                        // ,{field:'cardUpdTime',title:'cardUpdTime'}
+                        // ,{field:'custUpdTime',title:'custUpdTime'}
+                        // ,{field:'photo',title:'photo',templet: function(d){
+                        //     // let blob = new Blob([d.photo],  {type: 'image/jpeg;charset=GBK'});
+                        //     return d.photo?'<img src="data:image/jpeg;base64,'+ d.photo +'"/>':'';
+                        // }}
+                        // ,{field:'photoExactTime',title:'photoExactTime'}
+                        // ,{field:'id',title:'id'}
+                        , {title: '操作', align: 'center', toolbar: '#column-toolbar'}
                     ]
                 ]
             });
@@ -170,39 +193,55 @@
 
             table.on('tool', function (obj) {
                 var data = obj.data;
-                var swapId;
-                var currentId;
-                if (obj.event === 'edit') {
-                    edit(data.id);
-                } else if (obj.event === 'del') {
-                    del(data.id);
-                } else if (obj.event === "up") {
-                    swapId = $(obj.tr).prev().find("td[data-field='id'] div").html();
-                    currentId = data.id;
-                    if (typeof swapId == 'undefined') {
-                        layer.msg("已是第一层");
-                        return;
-                    }
-                    swapSort(currentId, swapId);
-                } else if (obj.event === "down") {
-                    swapId = $(obj.tr).next().find("td[data-field='id'] div").html();
-                    currentId = data.id;
-                    if (typeof swapId == 'undefined') {
-                        layer.msg("已是最后一层");
-                        return;
-                    }
-                    swapSort(currentId, swapId);
-                } else if (obj.event === "top") {
-                    swapId = $("tr[data-index='0']").first().parent().children().first().find("td[data-field='id'] div").html();
-                    currentId = data.id;
-                    swapSort(currentId, swapId);
-                } else if (obj.event === "bottom") {
-                    swapId = $("tr[data-index='0']").first().parent().children().last().find("td[data-field='id'] div").html();
-                    currentId = data.id;
-                    swapSort(currentId, swapId);
+                if (obj.event === 'syncSinglePerson') {
+                    layer.confirm("确定要同步人员信息?", {icon: 3, title: '提示'},
+                        function (index) {// 确定回调
+                            $.post('/custCardInfo/syncSinglePerson',obj.data, function (data) {
+                                layer.close(index);
+                                handlerResult(data, syncDone);
+                            });
+                        }, function (index) {//取消回调
+                            layer.close(index);
+                        }
+                    );
+                }else if (obj.event === 'updateSinglePerson') {
+                    layer.confirm("确定要修改人员信息?", {icon: 3, title: '提示'},
+                        function (index) {// 确定回调
+                            $.post('/custCardInfo/updateSinglePerson',obj.data, function (data) {
+                                layer.close(index);
+                                handlerResult(data, syncDone);
+                            });
+                        }, function (index) {//取消回调
+                            layer.close(index);
+                        }
+                    );
+                } else if (obj.event === 'syncSinglePhoto') {
+                    layer.confirm("确定要同步人脸信息?", {icon: 3, title: '提示'},
+                        function (index) {// 确定回调
+                            $.post('/custCardInfo/syncSinglePhoto',obj.data, function (data) {
+                                layer.close(index);
+                                handlerResult(data, syncDone);
+                            });
+                        }, function (index) {//取消回调
+                            layer.close(index);
+                        }
+                    );
+                } else if (obj.event === "syncSingleCard") {
+                    layer.confirm("确定要同步开卡信息?", {icon: 3, title: '提示'},
+                        function (index) {// 确定回调
+                            $.post('/custCardInfo/syncSingleCard',obj.data, function (data) {
+                                layer.close(index);
+                                handlerResult(data, syncDone);
+                            });
+                        }, function (index) {//取消回调
+                            layer.close(index);
+                        }
+                    );
                 }
             });
-
+            function syncDone(data) {
+                parent.layer.msg("同步结果:"+data.msg, {icon: 6});
+            }
 
             function refresh() {
                 table.reload("custcardinfo-table");

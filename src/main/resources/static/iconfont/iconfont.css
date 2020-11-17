@@ -15,6 +15,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.zadmin-icon-user:before {
+  content: "\e770";
+}
 .zadmin-icon-quanxianguankong:before {
   content: "\e67d";
 }

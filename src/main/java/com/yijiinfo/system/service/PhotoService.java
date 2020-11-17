@@ -5,6 +5,7 @@ import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.yijiinfo.system.mapper.db2.CustCardInfoMapper;
 import com.yijiinfo.system.model.CustCardInfo;
+import com.yijiinfo.system.model.Person;
 import com.yijiinfo.system.model.Photo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +22,26 @@ public class PhotoService {
     @Resource
     private CustCardInfoMapper custCardInfoMapper;
 
+
+    @Transactional
+    public JSONObject syncSinglePhoto(CustCardInfo custCardInfo) {
+        String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/face/single/add";
+        Map<String, String> path = new HashMap<String, String>(2) {
+            {
+                put("https://", getCamsApi);//根据现场环境部署确认是http还是https
+            }
+        };
+        Photo photo = new Photo();
+        photo.setPersonId(custCardInfo.getCustId());
+        photo.setFaceData(Base64.getEncoder().encodeToString(custCardInfo.getPhoto()));
+        String body = JSONObject.toJSON(photo).toString();
+        String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
+        return JSONObject.parseObject(result);
+    }
     @Transactional
     public void syncPhoto() {
 
-        System.out.println("测试获取的config数值："+ArtemisConfig.host);
-        final String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/face/single/add";
+        String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/face/single/add";
         Map<String, String> path = new HashMap<String, String>(2) {
             {
                 put("https://", getCamsApi);//根据现场环境部署确认是http还是https

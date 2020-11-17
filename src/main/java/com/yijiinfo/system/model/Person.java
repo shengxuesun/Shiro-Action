@@ -15,6 +15,7 @@ public class Person {
     private String certificateType;
     private String certificateNo;
     private String jobNo;
+    private String personType;
     /* idtype:1 身份证 2 护照
     select custid,custname,deptcode,sex,mobile,tel,email,idtype,idtypename,idno,stuempno from v_custcardinfo
      */

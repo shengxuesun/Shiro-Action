@@ -127,8 +127,11 @@
 <!--            <![CDATA[)TMP_PAGE) where ROW_ID <=${pageSize*pageNo} AND ROW_ID > ${pageSize*(pageNo-1)}]]>-->
 <!--        </if>-->
         <where>
-            <if test="stuEmpNo != null and stuEmpNo != ''">
-                AND STUEMPNO = #{stuEmpNo}
+            <if test="custName != null and custName != ''">
+                AND CUSTNAME = #{custName}
+            </if>
+            <if test="idNo != null and idNo != ''">
+                AND IDNO = #{idNo}
             </if>
         </where>
     </select>

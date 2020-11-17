@@ -149,6 +149,7 @@
 .zadmin-oper-area {
     font-size: 18px !important;
     margin-right: 5px;
+    cursor:pointer;
 }
 
 .zadmin-blue {

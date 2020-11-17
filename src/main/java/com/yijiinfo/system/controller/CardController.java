@@ -1,7 +1,9 @@
 package com.yijiinfo.system.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yijiinfo.common.annotation.OperationLog;
 import com.yijiinfo.common.util.ResultBean;
+import com.yijiinfo.system.model.CustCardInfo;
 import com.yijiinfo.system.service.CardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,15 @@ public class CardController {
     @GetMapping("/card")
     public String index() {
         return "custCardInfo/card-operation";
+    }
+
+
+    @OperationLog("同步单个开卡信息")
+    @PostMapping("/syncSingleCard")
+    @ResponseBody
+    public ResultBean syncSingleCard(CustCardInfo custCardInfo) {
+        JSONObject jsonObject = cardService.syncSingleCard(custCardInfo);
+        return ResultBean.successData(jsonObject);
     }
 
 
