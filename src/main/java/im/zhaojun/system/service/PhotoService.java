@@ -38,7 +38,8 @@ public class PhotoService {
 
             Photo photo = new Photo();
             photo.setPersonId(custCardInfo.getCustId());
-            photo.setFaceData("data:image/ico;base64,"+Base64.getEncoder().encodeToString(custCardInfo.getPhoto()));
+//            photo.setFaceData("data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(custCardInfo.getPhoto()));
+            photo.setFaceData(Base64.getEncoder().encodeToString(custCardInfo.getPhoto()));
             String body = JSONObject.toJSON(photo).toString();
             String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
             System.out.println("API Result:"+result);

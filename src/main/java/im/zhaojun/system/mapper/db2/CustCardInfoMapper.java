@@ -23,5 +23,7 @@ public interface CustCardInfoMapper {
 
     List<CustCardInfo> photoList();
 
+    List<CustCardInfo> cardList();
+
 
 }

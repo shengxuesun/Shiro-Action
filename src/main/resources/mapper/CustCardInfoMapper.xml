@@ -170,8 +170,25 @@ group by  specialtyCode, specialtyName
     </select>
 
     <select id="photoList" resultMap="BaseResultMap">
-        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800 and rownum &lt; 10
+        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800
     </select>
 
+    <select id="cardList" resultMap="BaseResultMap">
+        select
+            custid,
+            custname,
+            custtype,
+            cardstatus,
+            cardphyid,
+            expiredate,
+            opendate,cardverno,
+            cardtype,cardtypename,
+            cardupdtime,
+            deptcode,
+            deptname,
+            specialtycode,
+            specialtyname
+        from v_custcardinfo where cardstatus = 1 and expiredate > '20201113'
+    </select>
 
 </mapper>

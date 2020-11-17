@@ -109,8 +109,11 @@ public class ArtemisPostTest {
 
 	public static void main(String[] args) {
 
-		String StringeResult = callPostStringApi();
-		System.out.println("StringeResult结果示例: "+StringeResult);
-		callPostImgStringApi();
+		String date1 = "20201209";
+		String date2 = "20201109";
+		System.out.println(Integer.parseInt(date1) < Integer.parseInt(date2));
+//		String StringeResult = callPostStringApi();
+//		System.out.println("StringeResult结果示例: "+StringeResult);
+//		callPostImgStringApi();
 	}
 }
