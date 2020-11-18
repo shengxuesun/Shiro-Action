@@ -1,10 +1,13 @@
 package com.yijiinfo.system.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.yijiinfo.system.mapper.db2.CustCardInfoMapper;
 import com.yijiinfo.system.model.CustCardInfo;
+import com.yijiinfo.system.model.CustCardInfoNew;
 import com.yijiinfo.system.model.Person;
 import com.yijiinfo.system.model.Photo;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,8 @@ public class PhotoService {
 
 
     @Transactional
-    public JSONObject syncSinglePhoto(CustCardInfo custCardInfo) {
+    public JSONObject syncSinglePhoto(CustCardInfoNew custCardInfo) {
+        //第一步：添加，如果原先没有的话，添加成功，否则返回已经存在。
         String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/face/single/add";
         Map<String, String> path = new HashMap<String, String>(2) {
             {
@@ -33,10 +37,37 @@ public class PhotoService {
         };
         Photo photo = new Photo();
         photo.setPersonId(custCardInfo.getCustId());
-        photo.setFaceData(Base64.getEncoder().encodeToString(custCardInfo.getPhoto()));
+        photo.setFaceData(custCardInfo.getPhoto());
         String body = JSONObject.toJSON(photo).toString();
         String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
-        return JSONObject.parseObject(result);
+
+        if(JSONObject.parseObject(result).getString("msg").equals("PersonFace Exists")) {
+            String personInfoApi = ARTEMIS_PATH+"/api/resource/v1/person/condition/personInfo";
+            Map<String, String> path0 = new HashMap<String, String>(2) {
+                {
+                    put("https://", personInfoApi);//根据现场环境部署确认是http还是https
+                }
+            };
+            String body0 = "{\"paramName\":\"personId\",\"paramValue\":[\""+custCardInfo.getCustId()+"\"]}";
+            String result0 = ArtemisHttpUtil.doPostStringArtemis(path0,body0,null,null,"application/json",null);// post请求application/json类型参数
+            JSONObject personData = JSONObject.parseObject(result0);
+            JSONArray jsonArray = JSONObject.parseObject(personData.get("data").toString()).getJSONArray("list");
+            String faceId = jsonArray.getJSONObject(0).getJSONArray("personPhoto").getJSONObject(0).getString("personPhotoIndexCode");
+            System.out.println("faceId............"+faceId);
+
+            String updatePhotoApi = ARTEMIS_PATH+"/api/resource/v1/face/single/update";
+            Map<String, String> path1 = new HashMap<String, String>(2) {
+                {
+                    put("https://", updatePhotoApi);//根据现场环境部署确认是http还是https
+                }
+            };
+            String body1 = "{\"faceId\":\""+faceId+"\",\"faceData\":\""+custCardInfo.getPhoto()+"\"}";
+            System.out.println("request body of update photo:"+body1);
+            String result1 = ArtemisHttpUtil.doPostStringArtemis(path1,body1,null,null,"application/json",null);// post请求application/json类型参数
+            return JSONObject.parseObject(result1);
+        }else{
+            return JSONObject.parseObject(result);
+        }
     }
     @Transactional
     public void syncPhoto() {

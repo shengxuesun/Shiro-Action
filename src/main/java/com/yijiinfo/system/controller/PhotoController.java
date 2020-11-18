@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yijiinfo.common.annotation.OperationLog;
 import com.yijiinfo.common.util.ResultBean;
 import com.yijiinfo.system.model.CustCardInfo;
+import com.yijiinfo.system.model.CustCardInfoNew;
 import com.yijiinfo.system.service.PhotoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class PhotoController {
     @OperationLog("同步人脸信息")
     @PostMapping("/syncSinglePhoto")
     @ResponseBody
-    public ResultBean syncSinglePhoto(CustCardInfo custCardInfo) {
+    public ResultBean syncSinglePhoto(CustCardInfoNew custCardInfo) {
         JSONObject jsonObject = photoService.syncSinglePhoto(custCardInfo);
         return ResultBean.successData(jsonObject);
     }
