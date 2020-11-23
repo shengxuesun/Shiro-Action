@@ -2,7 +2,6 @@ package com.yijiinfo.system.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
-import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.yijiinfo.system.mapper.db2.CustCardInfoMapper;
 import com.yijiinfo.system.model.CustCardInfo;
 import com.yijiinfo.system.model.Person;
@@ -11,13 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.yijiinfo.MainActionApplication.ARTEMIS_PATH;
+import static com.yijiinfo.common.util.DataUtils.transPersonType;
 
 @Service
 public class PersonService {
@@ -35,8 +32,6 @@ public class PersonService {
             }
         };
         Person person = transFromCustCardInfo(custCardInfo);
-//        person.setPersonType(custCardInfo.getCustType());
-        person.setPersonType("2");
         String body = JSONObject.toJSON(person).toString();
         String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
 
@@ -52,8 +47,6 @@ public class PersonService {
             }
         };
         Person person = transFromCustCardInfo(custCardInfo);
-//        person.setPersonType(custCardInfo.getCustType());
-//        person.setPersonType("2");
         String body = JSONObject.toJSON(person).toString();
         String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
 
@@ -75,7 +68,6 @@ public class PersonService {
         custCardInfoList.forEach(custCardInfo ->{
             Person person = transFromCustCardInfo(custCardInfo);
             count.getAndSet(count.get() + 1);
-
             personList.add(person);
             if(count.get() % 1000 == 0){
                 String body = JSONObject.toJSON(personList).toString();
@@ -85,10 +77,8 @@ public class PersonService {
             }
             if(count.get().equals(totalCount)){
                 String body = JSONObject.toJSON(personList).toString();
-                System.out.println("JSON："+body);
                 String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
                 System.out.println("api result："+result);
-                System.out.println("Person："+person.toString());
                 personList.clear();
             }
 
@@ -122,21 +112,45 @@ public class PersonService {
         person.setClientId(Integer.parseInt(custCardInfo.getCustId()));
         person.setPersonId(custCardInfo.getCustId());
         person.setPersonName(custCardInfo.getCustName());
-        if(!StringUtils.isEmpty(custCardInfo.getDeptName()) && !StringUtils.isEmpty(custCardInfo.getSpecialtyName())){
-            if(!"1".equals(custCardInfo.getCustType())){//教职工原custtype是1
-                person.setOrgIndexCode(custCardInfo.getSpecialtyCode());
-            }else{
-                person.setOrgIndexCode("26");//默认是教职工所属部门“上海民航职业技术学院”
-            }
-        }else {
-            if (StringUtils.isEmpty(custCardInfo.getDeptName()) && StringUtils.isEmpty(custCardInfo.getSpecialtyName())) {
-                person.setOrgIndexCode("27");//没有任何部门, 取名“其他”
-            }else if(StringUtils.isEmpty(custCardInfo.getDeptName())){
-                person.setOrgIndexCode(custCardInfo.getSpecialtyCode());
-            }else{
+        person.setPersonType(transPersonType(custCardInfo.getCustType()));
+        String[] groups = {"2","3","4"};
+        List<String> studentGroups = Arrays.asList(groups);
+        if(!studentGroups.contains(custCardInfo.getCustType()) ){
+            if (!StringUtils.isEmpty(custCardInfo.getDeptName())) {
                 person.setOrgIndexCode(custCardInfo.getDeptCode());
+            }else{
+                person.setOrgIndexCode("1");
+            }
+        }else{
+            if (!StringUtils.isEmpty(custCardInfo.getSpecialtyName())) {
+                String gender = "1";
+                if (!StringUtils.isEmpty(custCardInfo.getSex()) && "2".equals(custCardInfo.getSex())) {
+                    gender = "2";
+                }
+                person.setOrgIndexCode(custCardInfo.getSpecialtyCode() + "-" + gender);
+            } else {
+                if(!StringUtils.isEmpty(custCardInfo.getDeptName())) {
+                    person.setOrgIndexCode(custCardInfo.getDeptCode());
+                }else{
+                    person.setOrgIndexCode("1");
+                }
             }
         }
+//        if(!StringUtils.isEmpty(custCardInfo.getDeptName()) && !StringUtils.isEmpty(custCardInfo.getSpecialtyName())){
+//            if(!"1".equals(custCardInfo.getCustType())){//教职工原custtype是1
+//                person.setOrgIndexCode(custCardInfo.getSpecialtyCode());
+//            }else{
+//                person.setOrgIndexCode("26");//默认是教职工所属部门“上海民航职业技术学院”
+//            }
+//        }else {
+//            if (StringUtils.isEmpty(custCardInfo.getDeptName()) && StringUtils.isEmpty(custCardInfo.getSpecialtyName())) {
+//                person.setOrgIndexCode("27");//没有任何部门, 取名“其他”
+//            }else if(StringUtils.isEmpty(custCardInfo.getDeptName())){
+//                person.setOrgIndexCode(custCardInfo.getSpecialtyCode());
+//            }else{
+//                person.setOrgIndexCode(custCardInfo.getDeptCode());
+//            }
+//        }
         person.setEmail(StringUtils.isEmpty(custCardInfo.getEmail())?"123@qq.com":custCardInfo.getEmail());
         person.setGender(Integer.parseInt(StringUtils.isEmpty(custCardInfo.getSex())?"0":custCardInfo.getSex()));
         person.setJobNo(custCardInfo.getStuEmpNo());
@@ -158,4 +172,5 @@ public class PersonService {
         person.setPhoneNo(StringUtils.isEmpty(custCardInfo.getMobile())?"110":custCardInfo.getMobile());
         return person;
     }
+
 }

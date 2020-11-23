@@ -3,11 +3,14 @@ package com.yijiinfo.hik;
 import com.alibaba.fastjson.JSONObject;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
+import me.zhyd.oauth.utils.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ArtemisPostTest {
@@ -115,5 +118,7 @@ public class ArtemisPostTest {
 //		String StringeResult = callPostStringApi();
 //		System.out.println("StringeResult结果示例: "+StringeResult);
 //		callPostImgStringApi();
+
+		System.out.println(StringUtils.isEmpty(null)?"empty":"不空");;
 	}
 }

@@ -5,7 +5,6 @@ import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.yijiinfo.system.mapper.db2.CustCardInfoMapper;
 import com.yijiinfo.system.model.Card;
 import com.yijiinfo.system.model.CustCardInfo;
-import com.yijiinfo.system.model.Person;
 import com.yijiinfo.system.model.SubCard;
 import me.zhyd.oauth.utils.StringUtils;
 import org.springframework.stereotype.Service;
@@ -66,19 +65,27 @@ public class CardService {
         SubCard subCard = new SubCard();
         subCard.setCardNo(custCardInfo.getCardPhyId());
         subCard.setCardType(Integer.parseInt(custCardInfo.getCardType()));
-        if(!StringUtils.isEmpty(custCardInfo.getDeptName()) && !StringUtils.isEmpty(custCardInfo.getSpecialtyName())){
-            if(!"1".equals(custCardInfo.getCustType())){//教职工原custtype是1
-                subCard.setOrgIndexCode(custCardInfo.getSpecialtyCode());
-            }else{
-                subCard.setOrgIndexCode("26");//默认是教职工所属部门“上海民航职业技术学院”
-            }
-        }else {
-            if (StringUtils.isEmpty(custCardInfo.getDeptName()) && StringUtils.isEmpty(custCardInfo.getSpecialtyName())) {
-                subCard.setOrgIndexCode("27");//没有任何部门, 取名“其他”
-            }else if(StringUtils.isEmpty(custCardInfo.getDeptName())){
-                subCard.setOrgIndexCode(custCardInfo.getSpecialtyCode());
-            }else{
+        String[] groups = {"2","3","4"};
+        List<String> studentGroups = Arrays.asList(groups);
+        if(!studentGroups.contains(custCardInfo.getCustType()) ){
+            if (!StringUtils.isEmpty(custCardInfo.getDeptName())) {
                 subCard.setOrgIndexCode(custCardInfo.getDeptCode());
+            }else{
+                subCard.setOrgIndexCode("1");
+            }
+        }else{
+            if (!StringUtils.isEmpty(custCardInfo.getSpecialtyName())) {
+                String gender = "1";
+                if (!StringUtils.isEmpty(custCardInfo.getSex()) && "2".equals(custCardInfo.getSex())) {
+                    gender = "2";
+                }
+                subCard.setOrgIndexCode(custCardInfo.getSpecialtyCode() + "-" + gender);
+            } else {
+                if(!StringUtils.isEmpty(custCardInfo.getDeptName())) {
+                    subCard.setOrgIndexCode(custCardInfo.getDeptCode());
+                }else{
+                    subCard.setOrgIndexCode("1");
+                }
             }
         }
         subCard.setPersonId(custCardInfo.getCustId());

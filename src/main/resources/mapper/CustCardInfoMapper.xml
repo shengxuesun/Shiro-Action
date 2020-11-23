@@ -123,6 +123,7 @@
         photoExactTime,
         id
         from V_CUSTCARDINFO
+
 <!--        <if test="pageNo!=null and pageSize!=null">-->
 <!--            <![CDATA[)TMP_PAGE) where ROW_ID <=${pageSize*pageNo} AND ROW_ID > ${pageSize*(pageNo-1)}]]>-->
 <!--        </if>-->
@@ -133,22 +134,24 @@
             <if test="idNo != null and idNo != ''">
                 AND IDNO = #{idNo}
             </if>
+            AND expiredate > '20201122' and outdate > '20201122'
         </where>
     </select>
     <select id="organizationList" resultMap="BaseResultMap">
-select
-        deptCode,
+select * from
+        (select
+        distinct deptCode,
         deptName
         from V_CUSTCARDINFO
-        where deptName is not null and deptCode != 1
-group by  deptCode, deptName
+        where deptName is not null and custtype not in (2,3,4)
+        order by deptCode) t1
 Union all
-        select
-        specialtycode as deptCode,
-        specialtyName as deptName
+select * from
+        (select distinct
+        concat(specialtycode,case sex when '1' then '-1' when '2' then '-2' else '-1' end) as deptCode,
+        concat(specialtyName,case sex when '1' then '系-男' when '2' then '系-女' else '系-男' end) as deptName
         from V_CUSTCARDINFO
-        where specialtyName is not null
-group by  specialtyCode, specialtyName
+        where specialtyName is not null and custtype in (2,3,4) order by deptCode)
     </select>
 
 
@@ -168,12 +171,16 @@ group by  specialtyCode, specialtyName
             idtype,
             idtypename,
             idno,
-            stuempno
+            stuempno,
+            indate,
+            outdate,
+            expiredate
         from V_CUSTCARDINFO
+        where expiredate > '20201122' and outdate > '20201122'
     </select>
 
     <select id="photoList" resultMap="BaseResultMap">
-        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800
+        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800  and  expiredate > '20201122' and outdate > '20201122'
     </select>
 
     <select id="cardList" resultMap="BaseResultMap">
@@ -191,7 +198,7 @@ group by  specialtyCode, specialtyName
             deptname,
             specialtycode,
             specialtyname
-        from v_custcardinfo where cardstatus = 1 and expiredate > '20201113'
+        from v_custcardinfo where cardstatus = 1 and expiredate > '20201122'
     </select>
 
 </mapper>

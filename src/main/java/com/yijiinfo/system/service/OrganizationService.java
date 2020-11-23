@@ -34,8 +34,6 @@ public class OrganizationService {
             Organization organization = new Organization(custCardInfo.getDeptCode(),custCardInfo.getDeptName());
             organizationList.add(organization);
         });
-        organizationList.add(new Organization("26","上海民航职业技术学员"));
-        organizationList.add(new Organization("27","其他"));
         System.out.println("测试config只"+ArtemisConfig.host);
         final String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/org/batch/add";
         Map<String, String> path = new HashMap<String, String>(2) {
