@@ -50,6 +50,9 @@ public class CardService {
             String body = JSONObject.toJSON(transFromCustCardInfo(custCardInfo)).toString();
             String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
             System.out.println("API Result:"+result);
+//            if(result.indexOf("0x04a12030")!=-1){
+//                System.out.println("the body of the request:"+body);
+//            }
         });
     }
 
@@ -63,7 +66,14 @@ public class CardService {
             card.setEndDate(custCardInfo.getExpireDate().substring(0, 4) + "-" + custCardInfo.getExpireDate().substring(4, 6) + "-" + custCardInfo.getExpireDate().substring(6, 8));
         }
         SubCard subCard = new SubCard();
-        subCard.setCardNo(custCardInfo.getCardPhyId());
+        String cardNo = Long.toString(Long.parseLong(custCardInfo.getCardPhyId(),16));
+        int cardNoLength = cardNo.length();
+        if(cardNoLength == 9){
+            cardNo = "0"+cardNo;
+        }else if(cardNoLength == 8){
+            cardNo = "00"+cardNo;
+        }
+        subCard.setCardNo(cardNo);
         subCard.setCardType(Integer.parseInt(custCardInfo.getCardType()));
         String[] groups = {"2","3","4"};
         List<String> studentGroups = Arrays.asList(groups);

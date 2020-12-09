@@ -126,7 +126,7 @@ public class ShiroConfig {
     public RedisCacheManager redisCacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
-        redisCacheManager.setExpire(shiroActionProperties.getPermsCacheTimeout() == null ? 3600 : shiroActionProperties.getPermsCacheTimeout());
+        redisCacheManager.setExpire(shiroActionProperties.getPermsCacheTimeout() == null ? 36000 : shiroActionProperties.getPermsCacheTimeout());
         redisCacheManager.setPrincipalIdFieldName("userId");
         return redisCacheManager;
     }
@@ -141,7 +141,7 @@ public class ShiroConfig {
     @Bean
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setExpire(shiroActionProperties.getSessionTimeout() == null ? 1800 : shiroActionProperties.getSessionTimeout());
+        redisSessionDAO.setExpire(shiroActionProperties.getSessionTimeout() == null ? 18000 : shiroActionProperties.getSessionTimeout());
         redisSessionDAO.setRedisManager(redisManager());
         redisSessionDAO.setSessionInMemoryEnabled(false);
         return redisSessionDAO;
@@ -152,6 +152,7 @@ public class ShiroConfig {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         sessionManager.setSessionIdUrlRewritingEnabled(false);
+        sessionManager.setGlobalSessionTimeout(7200000);
         return sessionManager;
     }
 }

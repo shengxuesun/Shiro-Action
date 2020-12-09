@@ -119,6 +119,17 @@ public class ArtemisPostTest {
 //		System.out.println("StringeResult结果示例: "+StringeResult);
 //		callPostImgStringApi();
 
-		System.out.println(StringUtils.isEmpty(null)?"empty":"不空");;
+//		System.out.println(StringUtils.isEmpty(null)?"empty":"不空");;
+
+		System.out.println(Long.parseLong("76037F40",16));
+
+		String cardNo = Long.toString(Long.parseLong("125C2263",16));
+		int cardNoLength = cardNo.length();
+		if(cardNoLength == 9){
+			cardNo = "0"+cardNo;
+		}else if(cardNoLength == 8){
+			cardNo = "00"+cardNo;
+		}
+		System.out.println(cardNo);
 	}
 }

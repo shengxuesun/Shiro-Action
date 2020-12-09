@@ -134,6 +134,9 @@
             <if test="idNo != null and idNo != ''">
                 AND IDNO = #{idNo}
             </if>
+            <if test="custId != null and custId != ''">
+                AND custId = #{custId}
+            </if>
             AND expiredate > '20201122' and outdate > '20201122'
         </where>
     </select>
