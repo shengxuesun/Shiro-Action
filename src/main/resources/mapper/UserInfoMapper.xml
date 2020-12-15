@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yijiinfo.system.mapper.db1.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yijiinfo.system.model.UserInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="person_type" jdbcType="INTEGER" property="personType"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="sno" jdbcType="VARCHAR" property="sno"/>
+        <result column="classes" jdbcType="VARCHAR" property="classes"/>
+        <result column="department" jdbcType="VARCHAR" property="department"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="ethnic" jdbcType="INTEGER" property="ethnic"/>
+        <result column="dorm" jdbcType="VARCHAR" property="dorm"/>
+        <result column="start_date" jdbcType="VARCHAR" property="startDate"/>
+        <result column="id_type" jdbcType="INTEGER" property="idType"/>
+        <result column="id_no" jdbcType="VARCHAR" property="idNo"/>
+        <result column="photo" jdbcType="BLOB" property="photo"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime"/>
+        <result column="audit_status" jdbcType="INTEGER" property="auditStatus"/>
+        <result column="update_hik" jdbcType="INTEGER" property="updateHik"/>
+        <result column="is_new" jdbcType="INTEGER" property="isNew"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        person_type,
+        username,
+        gender,
+        sno,
+        classes,
+        department,
+        mobile,
+        ethnic,
+        dorm,
+        start_date,
+        id_type,
+        id_no,
+        photo,
+        create_time,
+        audit_time,
+        audit_status,
+        update_hik,
+        is_new
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from user_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.yijiinfo.system.model.UserInfo"
+            useGeneratedKeys="true">
+        insert into user_info (person_type,username,gender,sno,classes,department,mobile,ethnic,dorm,start_date,id_type,id_no,photo,create_time,audit_time,
+                               audit_status,update_hik,is_new)
+        values (#{personType,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{classes,jdbcType=VARCHAR},
+                #{department,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{ethnic,jdbcType=INTEGER}, #{dorm,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR},
+                #{idType,jdbcType=INTEGER}, #{idNo,jdbcType=VARCHAR}, #{photo,jdbcType=BLOB}, #{createTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP},
+                #{auditStatus,jdbcType=INTEGER}, #{updateHik,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER})
+    </insert>
+    <update id="updateAuditByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
+        update user_info
+        set audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            audit_status    = #{auditStatus,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateHikByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
+        update user_info
+        set update_hik = #{updateHik,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateIsNewByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
+        update user_info
+        set is_new = #{isNew,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+    </select>
+
+    <select id="selectAllByQuery" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        <where>
+            <if test="username != null and username != ''">
+                AND username like concat('%', #{username}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(*)
+        from user_info
+    </select>
+</mapper>

@@ -155,4 +155,7 @@ public class ShiroConfig {
         sessionManager.setGlobalSessionTimeout(7200000);
         return sessionManager;
     }
+
+
+
 }
