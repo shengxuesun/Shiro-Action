@@ -16,11 +16,11 @@
 <div class="collect-main">
     <fieldset class="layui-elem-field-front">
         <legend>安防数据搜集</legend>
-        <form class="layui-form" action="">
+        <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">人员类型：</label>
             <div class="layui-input-block">
-                <select name="personType" id="personType" lay-filter="personType">
+                <select name="personType" lay-filter="personType" id="personType" lay-verify="required" lay-reqtext="人员类型是必填项">
                     <option value="1">教工</option>
                     <option value="2" selected="">学员</option>
                     <option value="3">流动人员</option>
@@ -31,7 +31,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">姓名：</label>
             <div class="layui-input-block">
-                <input type="text" name="username" lay-verify="username" autocomplete="off" placeholder="请输入姓名" class="layui-input">
+                <input type="text" name="username" autocomplete="off" placeholder="请输入姓名" lay-verify="required" lay-reqtext="姓名是必填项" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -50,7 +50,7 @@
         <div class="layui-form-item" id="student_class">
             <label class="layui-form-label">班级：</label>
             <div class="layui-input-block">
-                <select name="class" lay-verify="required" lay-search="">
+                <select name="classes" lay-verify="classes" lay-search="">
                     <option value=""></option>
                     <option value="民航运输2011101">民航运输 2011101</option>
                     <option value="民航运输2011102">民航运输 2011102</option>
@@ -139,7 +139,7 @@
         <div class="layui-form-item" id="dept" style="display:none">
             <label class="layui-form-label">部门：</label>
             <div class="layui-input-block">
-                <select name="department" lay-verify="required" lay-search="">
+                <select name="department" lay-verify="department" lay-search="">
                     <option value=""></option>
                     <option value="109">基础部</option>
                     <option value="128">图文信息中心</option>
@@ -193,7 +193,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">国籍：</label>
             <div class="layui-input-block">
-                <select name="personType" lay-filter="aihao">
+                <select name="country" lay-filter="country">
                     <option value="CN" selected="">中国</option>
                     <option value="FN">外国</option>
                 </select>
@@ -202,7 +202,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">民族：</label>
             <div class="layui-input-block">
-                <select name="ethnic" lay-filter="aihao">
+                <select name="ethnic" lay-filter="ethnic">
                     <option value="1" selected="">汉族</option>
                     <option value="2">蒙古族</option>
                     <option value="3">回族</option>
@@ -266,7 +266,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">宿舍楼号：</label>
             <div class="layui-input-block">
-                <select name="ethnic" lay-filter="aihao">
+                <select name="dorm" lay-filter="dorm">
                     <option value=""></option>
                     <option value="PD1-38">浦东1号宿舍(38幢)</option>
                     <option value="PD1-38">浦东1号宿舍(38幢)</option>
@@ -298,28 +298,28 @@
         <div class="layui-form-item">
             <label class="layui-form-label">入学时间：</label>
             <div class="layui-input-block">
-                <input type="text" name="start_date" id="start_date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                <input type="text" name="startDate" id="startDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">证件类型：</label>
             <div class="layui-input-block">
-                <select name="id_type" lay-filter="idType">
+                <select name="idType" lay-verify="required" lay-reqtext="证件类型是必填项">
                     <option value="111" selected="">身份证</option>
-                    <option value="414" selected="">护照</option>
-                    <option value="113" selected="">户口簿</option>
-                    <option value="335" selected="">驾驶证</option>
-                    <option value="131" selected="">工作证</option>
-                    <option value="133" selected="">学生证</option>
-                    <option value="114" selected="">军官证</option>
-                    <option value="990" selected="">其他</option>
+                    <option value="414">护照</option>
+                    <option value="113">户口簿</option>
+                    <option value="335">驾驶证</option>
+                    <option value="131">工作证</option>
+                    <option value="133">学生证</option>
+                    <option value="114">军官证</option>
+                    <option value="990">其他</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">证件号码：</label>
             <div class="layui-input-block">
-                <input type="text" name="idno" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="idNo" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="证件号码是必填项">
             </div>
         </div>
         <div class="layui-form-item">
@@ -330,28 +330,27 @@
         </div>
         <div class="layui-form-item">
             <div class="photo-standard">
-                分辨率：大于480*640<br/>
-                瞳距：40-200<br/>
-                大小：10KB~200KB<br/>
-                角度：必须正面<br/>
-                环境：背景不宜太复杂，尽量选择白色墙面<br/>
-                格式：jpg<br/>
+                <b>分辨率：</b>大于480*640<br/>
+                <b>瞳距：</b>40-200<br/>
+                <b>大小：</b>10KB~200KB<br/>
+                <b>角度：</b>必须正面<br/>
+                <b>环境：</b>背景不宜太复杂，尽量选择白色墙面<br/>
+                <b>格式：</b>jpg<br/>
             </div>
             <div class="photo-upload">
-                <button type="button" class="layui-btn" id="photo">
+                <button type="button" class="layui-btn" id="file">
                     <i class="layui-icon">&#xe67c;</i>上传图片
                 </button>
+                <input type="hidden" name="photo" id="photo" lay-verify="required"  lay-reqtext="符合要求的人脸图片需要上传">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
             </div>
         </div>
-        <!--<div class="layui-form-item layui-form-text">
-          <label class="layui-form-label">编辑器</label>
-          <div class="layui-input-block">
-            <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
-          </div>
-        </div>-->
         <div class="collect-buttons">
             <div class="layui-input-block">
-                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="submit" lay-submit lay-filter="sub" class="layui-btn layui-btn-blue">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
@@ -370,20 +369,53 @@
             ,upload = layui.upload;
         //日期
         laydate.render({
-            elem: '#start_date'
+            elem: '#startDate'
         });
-        laydate.render({
-            elem: '#date1'
-        });
-        //执行实例
+        //普通图片上传
         var uploadInst = upload.render({
-            elem: '#photo' //绑定元素
-            ,url: '/upload/' //上传接口
+            elem: '#file'
+            ,url: '/collect/upload' //改成您自己的上传接口
+            ,size: 2*1024*1024
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    var name = file["name"];
+                    var index = name.lastIndexOf(".")+1;
+                    var fileType = name.substring(index,name.length);
+                    var acceptFileTypes = /^jpeg|JPG|jpg|JPEG$/i;
+                    if(!acceptFileTypes.test(fileType)){
+                        return layer.msg('不支持该图片格式');
+                    }
+                    // var fileSize = file["size"];
+                    // if(fileSize<10*1024 ||fileSize>200*1024){
+                    //     return layer.msg('图片大小要求在10K到200K之间');
+                    // }
+                    $('#demo1').attr('src', result); //图片链接（base64）、
+                    $('#photo').attr('value',result.split(",")[1]);
+                });
+            }
             ,done: function(res){
-                //上传完毕回调
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }else{
+                    if(!res.data.checkResult){
+                        $('#photo').attr('value','');
+                        return layer.msg('人脸图片审核不通过，请重新按照要求上人脸图片！');
+                    }else{
+                        $('#photo').attr('value',res.photo);
+                        return layer.msg('恭喜您，人脸审核通过，您可以继续提交！');
+                    }
+                }
+                //上传成功
             }
             ,error: function(){
-                //请求异常回调
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
             }
         });
         //创建一个编辑器
@@ -413,13 +445,17 @@
             layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
         });
 
-        //监听提交
-        form.on('submit(demo1)', function(data){
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+        //添加表单监听事件,提交采集信息
+        form.on('submit(sub)', function (data) {
+            $.post('/collect/add', data.field, function (result) {
+                handlerResult(result, collectDone);
+            });
+            //防止页面跳转
             return false;
         });
+        function collectDone(data) {
+            layer.msg("采集成功!", {icon: 6});
+        }
         form.on('select(personType)', function(data) {
             var val = data.value;
             if(val === "2"){

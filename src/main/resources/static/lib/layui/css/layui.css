@@ -2048,7 +2048,7 @@ a cite {
     float: left;
     display: block;
     padding: 9px 15px;
-    width: 73px;
+    width: 80px;
     font-weight: 400;
     line-height: 20px;
     text-align: right
@@ -2106,7 +2106,7 @@ a cite {
 
 .layui-form-select .layui-edge {
     position: absolute;
-    right: 18px;
+    right: 24px;
     top: 50%;
     margin-top: -3px;
     cursor: pointer;
@@ -5278,8 +5278,8 @@ body .layui-util-face .layui-layer-content {
     display: block;
     width: 140px;
     margin: 0 12px 12px 8px;
-    font-size: 11px;
     float:left;
+    height: 165px;
 }
 .photo-upload{
     display: block;
@@ -5288,4 +5288,8 @@ body .layui-util-face .layui-layer-content {
 .collect-buttons{
     text-align: center;
     margin-bottom: 23px;
+}
+
+.layui-upload-img{
+    width:122px;
 }

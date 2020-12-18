@@ -198,6 +198,7 @@ select * from
             cardtype,cardtypename,
             cardupdtime,
             deptcode,
+            sex,
             deptname,
             specialtycode,
             specialtyname

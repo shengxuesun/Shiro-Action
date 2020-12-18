@@ -5,11 +5,13 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="person_type" jdbcType="INTEGER" property="personType"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="card_no" jdbcType="VARCHAR" property="cardNo"/>
         <result column="gender" jdbcType="INTEGER" property="gender"/>
         <result column="sno" jdbcType="VARCHAR" property="sno"/>
         <result column="classes" jdbcType="VARCHAR" property="classes"/>
         <result column="department" jdbcType="VARCHAR" property="department"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
         <result column="ethnic" jdbcType="INTEGER" property="ethnic"/>
         <result column="dorm" jdbcType="VARCHAR" property="dorm"/>
         <result column="start_date" jdbcType="VARCHAR" property="startDate"/>
@@ -26,11 +28,13 @@
         id,
         person_type,
         username,
+        card_no,
         gender,
         sno,
         classes,
         department,
         mobile,
+        country,
         ethnic,
         dorm,
         start_date,
@@ -56,10 +60,10 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.yijiinfo.system.model.UserInfo"
             useGeneratedKeys="true">
-        insert into user_info (person_type,username,gender,sno,classes,department,mobile,ethnic,dorm,start_date,id_type,id_no,photo,create_time,audit_time,
+        insert into user_info (person_type,username,card_no,gender,sno,classes,department,mobile,country,ethnic,dorm,start_date,id_type,id_no,photo,create_time,audit_time,
                                audit_status,update_hik,is_new)
-        values (#{personType,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{classes,jdbcType=VARCHAR},
-                #{department,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{ethnic,jdbcType=INTEGER}, #{dorm,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR},
+        values (#{personType,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{classes,jdbcType=VARCHAR},
+                #{department,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR}, #{ethnic,jdbcType=INTEGER}, #{dorm,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR},
                 #{idType,jdbcType=INTEGER}, #{idNo,jdbcType=VARCHAR}, #{photo,jdbcType=BLOB}, #{createTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP},
                 #{auditStatus,jdbcType=INTEGER}, #{updateHik,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER})
     </insert>

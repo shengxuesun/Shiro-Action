@@ -50,9 +50,9 @@ public class CardService {
             String body = JSONObject.toJSON(transFromCustCardInfo(custCardInfo)).toString();
             String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
             System.out.println("API Result:"+result);
-//            if(result.indexOf("0x04a12030")!=-1){
-//                System.out.println("the body of the request:"+body);
-//            }
+            if(result.indexOf("0x04a12030")!=-1){
+                System.out.println("the body of the request:"+body);
+            }
         });
     }
 
@@ -90,6 +90,7 @@ public class CardService {
                     gender = "2";
                 }
                 subCard.setOrgIndexCode(custCardInfo.getSpecialtyCode() + "-" + gender);
+//                System.out.print(subCard.getOrgIndexCode()+"-=-"+custCardInfo.getSex());
             } else {
                 if(!StringUtils.isEmpty(custCardInfo.getDeptName())) {
                     subCard.setOrgIndexCode(custCardInfo.getDeptCode());

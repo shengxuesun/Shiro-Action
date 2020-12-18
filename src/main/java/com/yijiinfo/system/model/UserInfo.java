@@ -2,8 +2,8 @@ package com.yijiinfo.system.model;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Time;
+import java.util.Date;
 
 @Data
 public class UserInfo implements Serializable {
@@ -12,17 +12,19 @@ public class UserInfo implements Serializable {
     private Integer id;
     private Integer personType;
     private String username;
+    private String cardNo;
     private Integer gender;
     private String sno;
     private String classes;
     private String department;
     private String mobile;
+    private String country;
     private Integer ethnic;
     private String dorm;
     private String startDate;
     private Integer idType;
     private String idNo;
-    private byte[] photo;
+    private String photo;
     private Date createTime;
     private Integer auditStatus;
     private Time auditTime;
