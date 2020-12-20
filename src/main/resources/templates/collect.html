@@ -319,7 +319,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">证件号码：</label>
             <div class="layui-input-block">
-                <input type="text" name="idNo" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required" lay-reqtext="证件号码是必填项">
+                <input type="text" name="idNo" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|identity" lay-reqtext="证件号码是必填项">
             </div>
         </div>
         <div class="layui-form-item">
@@ -332,7 +332,6 @@
             <div class="photo-standard">
                 <b>分辨率：</b>大于480*640<br/>
                 <b>瞳距：</b>40-200<br/>
-                <b>大小：</b>10KB~200KB<br/>
                 <b>角度：</b>必须正面<br/>
                 <b>环境：</b>背景不宜太复杂，尽量选择白色墙面<br/>
                 <b>格式：</b>jpg<br/>
@@ -342,6 +341,7 @@
                     <i class="layui-icon">&#xe67c;</i>上传图片
                 </button>
                 <input type="hidden" name="photo" id="photo" lay-verify="required"  lay-reqtext="符合要求的人脸图片需要上传">
+                <input type="hidden" name="photoScore" id="photoScore">
                 <div class="layui-upload-list">
                     <img class="layui-upload-img" id="demo1">
                     <p id="demoText"></p>
@@ -350,7 +350,7 @@
         </div>
         <div class="collect-buttons">
             <div class="layui-input-block">
-                <button type="submit" lay-submit lay-filter="sub" class="layui-btn layui-btn-blue">立即提交</button>
+                <button type="submit" lay-submit lay-filter="sub" id="sub" class="layui-btn layui-btn-blue">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
@@ -361,6 +361,11 @@
 <script th:src="@{/lib/layui/layui.js}"></script>
 <script th:src="@{/js/common.js}"></script>
 <script>
+    var needRefresh = sessionStorage.getItem("need-refresh");
+    if(needRefresh){
+        sessionStorage.removeItem("need-refresh");
+        location.reload();
+    }
     layui.use(['form', 'layedit', 'laydate','upload'], function(){
         var form = layui.form
             ,layer = layui.layer
@@ -386,12 +391,10 @@
                     if(!acceptFileTypes.test(fileType)){
                         return layer.msg('不支持该图片格式');
                     }
-                    // var fileSize = file["size"];
-                    // if(fileSize<10*1024 ||fileSize>200*1024){
-                    //     return layer.msg('图片大小要求在10K到200K之间');
-                    // }
-                    $('#demo1').attr('src', result); //图片链接（base64）、
-                    $('#photo').attr('value',result.split(",")[1]);
+
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                    // $('#photo').attr('value',result.split(",")[1]);
+                    $('#sub').attr('disabled','disabled');
                 });
             }
             ,done: function(res){
@@ -403,7 +406,9 @@
                         $('#photo').attr('value','');
                         return layer.msg('人脸图片审核不通过，请重新按照要求上人脸图片！');
                     }else{
-                        $('#photo').attr('value',res.photo);
+                        $('#photo').attr('value',res.photodata);
+                        $('#photoScore').attr('value',res.data.faceScore);
+                        $('#sub').removeAttr('disabled');
                         return layer.msg('恭喜您，人脸审核通过，您可以继续提交！');
                     }
                 }
@@ -454,7 +459,8 @@
             return false;
         });
         function collectDone(data) {
-            layer.msg("采集成功!", {icon: 6});
+            window.location.href = "/collectSuccess";
+            //layer.msg("采集成功!", {icon: 6});
         }
         form.on('select(personType)', function(data) {
             var val = data.value;

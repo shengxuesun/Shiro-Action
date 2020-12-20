@@ -62,9 +62,9 @@
                                             <input type="text" name="idNo" autocomplete="off"
                                                    id="idNo" class="layui-input">
                                         </div>
-                                        <label for="cardNo" class="layui-form-label">一卡通卡号</label>
+                                        <label for="cardNo" class="layui-form-label">唯一ID</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" name="cardNo" autocomplete="off"
+                                            <input type="text" name="personId" autocomplete="off"
                                                    id="cardNo" class="layui-input">
                                         </div>
                                         <button lay-submit="" lay-filter="search" class="layui-btn layui-btn-sm layui-btn-primary table-action">
@@ -115,9 +115,9 @@
         var tablePlug = layui.tablePlug;
 
         tablePlug.smartReload.enable(true);
-        form.on('submit(search)', function (form) {
-            table.reload('custcardinfo-table', {
-                where: form.field
+        form.on('submit(search)', function (data) {
+            table.reload('userInfo-table', {
+                where: data.field
             });
             return false;
         });
@@ -131,8 +131,9 @@
                 [
 
                     {type: 'numbers', title: '序号', width: "3%"}
-                    ,{field:'cardNo',title:'一卡通'}
+                    // ,{field:'cardNo',title:'一卡通'}
                     // , {field: 'stuEmpNo', title: '学工号', hide: false}
+                    , {field: 'personId', title: '用户唯一ID'}
                     , {field: 'username', title: '姓名'}
                     // , {field: 'cardNo', title: '卡号'}
                     // , {field: 'cardStatus', title: '卡状态'}
@@ -173,11 +174,12 @@
                     // ,{field:'addr',title:'addr'}
                     // ,{field:'zipCode',title:'zipCode'}
                     // ,{field:'cardUpdTime',title:'cardUpdTime'}
-                    // ,{field:'custUpdTime',title:'custUpdTime'}
-                    ,{field:'photo',title:'photo',templet: function(d){
+
+                    ,{field:'photo',title:'人脸照片',templet: function(d){
                         // let blob = new Blob([d.photo],  {type: 'image/jpeg;charset=GBK'});
-                        return d.photo?'<img src="data:image/jpeg;base64,'+ d.photo +'"/>':'';
+                        return d.photo?'<div onclick="photograph(this)"><img src="data:image/jpeg;base64,'+d.photo+'"></div>':'';
                     }}
+                    ,{field:'photoScore',title:'人脸评分'}
                     // ,{field:'photoExactTime',title:'photoExactTime'}
                     // ,{field:'id',title:'id'}
                     , {title: '操作', align: 'center', toolbar: '#column-toolbar'}
@@ -242,6 +244,23 @@
             DTree.menubarMethod().refreshTree();
         }
     });
+    function photograph(t) {
+
+        var t = $(t).find("img");
+        if(t == null||t == ''){
+            return;
+        }
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['75%', '85%'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            end: function (index, layero) {
+                return false;
+            },
+            content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" /></div>'
+        });
+    }
 </script>
 </body>
 

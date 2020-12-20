@@ -30,6 +30,8 @@ public class UserInfo implements Serializable {
     private Time auditTime;
     private Integer updateHik;
     private Integer isNew;
+    private String personId;
+    private Integer photoScore;
     @Override
     public String toString() {
         return "CustCardInfo{" +

@@ -23,6 +23,8 @@
         <result column="audit_status" jdbcType="INTEGER" property="auditStatus"/>
         <result column="update_hik" jdbcType="INTEGER" property="updateHik"/>
         <result column="is_new" jdbcType="INTEGER" property="isNew"/>
+        <result column="person_id" jdbcType="VARCHAR" property="personId"/>
+        <result column="photo_score" jdbcType="INTEGER" property="photoScore"/>
     </resultMap>
     <sql id="Base_Column_List">
         id,
@@ -45,7 +47,9 @@
         audit_time,
         audit_status,
         update_hik,
-        is_new
+        is_new,
+        person_id,
+        photo_score
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -61,11 +65,11 @@
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.yijiinfo.system.model.UserInfo"
             useGeneratedKeys="true">
         insert into user_info (person_type,username,card_no,gender,sno,classes,department,mobile,country,ethnic,dorm,start_date,id_type,id_no,photo,create_time,audit_time,
-                               audit_status,update_hik,is_new)
+                               audit_status,update_hik,is_new,person_id,photo_score)
         values (#{personType,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{sno,jdbcType=VARCHAR}, #{classes,jdbcType=VARCHAR},
                 #{department,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR}, #{ethnic,jdbcType=INTEGER}, #{dorm,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR},
                 #{idType,jdbcType=INTEGER}, #{idNo,jdbcType=VARCHAR}, #{photo,jdbcType=BLOB}, #{createTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP},
-                #{auditStatus,jdbcType=INTEGER}, #{updateHik,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER})
+                #{auditStatus,jdbcType=INTEGER}, #{updateHik,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER},#{personId,jdbcType=VARCHAR},#{photoScore,jdbcType=INTEGER})
     </insert>
     <update id="updateAuditByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
         update user_info
@@ -97,6 +101,12 @@
         <where>
             <if test="username != null and username != ''">
                 AND username like concat('%', #{username}, '%')
+            </if>
+            <if test="idNo != null and idNo != ''">
+                AND id_no like concat('%', #{idNo}, '%')
+            </if>
+            <if test="personId != null and personId != ''">
+                AND person_id like concat('%', #{personId}, '%')
             </if>
         </where>
     </select>

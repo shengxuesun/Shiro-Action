@@ -39,10 +39,26 @@ public class CollectController {
         return "collect";
     }
 
+    @OperationLog("采集成功")
+    @GetMapping("/collectSuccess")
+    public String collectSuccess() {
+        return "collectSuccess";
+    }
+
     @OperationLog("采集人员")
     @PostMapping("/collect/add")
     @ResponseBody
     public ResultBean add(UserInfo userInfo) {
+
+        List<UserInfo> userInfoList = userInfoService.selectByQuery(userInfo);
+        if(userInfoList.size()>0){
+            return ResultBean.error("您的信息已经提交过");
+        }
+        JSONObject checkUserRes = userInfoService.checkUser(userInfo.getUsername(),userInfo.getIdNo());
+        if (Integer.parseInt(checkUserRes.get("number").toString()) == 0){
+            return ResultBean.error("系统不存在相应的用户");
+        }
+        userInfo.setPersonId(checkUserRes.get("personId").toString());
         userInfo.setCreateTime(new Date(System.currentTimeMillis()));
         /**
          * TODO: 查询是否已经存在于海康系统。已经存在的话更新必要信息，包括人脸图片
@@ -58,7 +74,7 @@ public class CollectController {
         String newFileName = "D:/temp/thumbnail"+file.getOriginalFilename();
         File tempFile = new File(newFileName);
         Thumbnails.of(file.getInputStream())
-                .scale(0.25f)
+                .scale(0.3f)
                 .outputQuality(0.7f)
                 .toFile(tempFile);
 

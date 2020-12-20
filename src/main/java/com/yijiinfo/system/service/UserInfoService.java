@@ -59,6 +59,36 @@ public class UserInfoService {
         return userInfoMapper.selectAllByQuery(userInfoQuery);
     }
 
+    public List<UserInfo> selectByQuery(UserInfo userInfoQuery) {
+        return userInfoMapper.selectAllByQuery(userInfoQuery);
+    }
+
+    public JSONObject checkUser(String username,String idNo){
+        final String getCheckUserApi = ARTEMIS_PATH+"/api/resource/v2/person/advance/personList";
+        Map<String, String> path = new HashMap<String, String>(2) {
+            {
+                put("https://", getCheckUserApi);//根据现场环境部署确认是http还是https
+            }
+        };
+        String body = "{\"personName\":\""+username+"\",\"certificateNo\":\""+idNo+"\",\"pageNo\":1,\"pageSize\":10}";
+        String result = ArtemisHttpUtil.doPostStringArtemis(path,body,null,null,"application/json",null);// post请求application/json类型参数
+
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        int num = Integer.parseInt(jsonObject.getJSONObject("data").get("total").toString());
+
+        String personId = "";
+        if(num>0) {
+            List<Object> lists = jsonObject.getJSONObject("data").getObject("list", List.class);
+            personId = JSONObject.parseObject(lists.get(0).toString()).get("personId").toString();
+        }
+        JSONObject jsonObjectResult = new JSONObject();
+        jsonObjectResult.put("number",num);
+        jsonObjectResult.put("personId",personId);
+
+
+        return jsonObjectResult;
+    }
+
     public JSONObject checkPhoto(String photo){
         final String getCheckPhotoApi = ARTEMIS_PATH+"/api/frs/v1/face/picture/check";
         Map<String, String> path = new HashMap<String, String>(2) {
