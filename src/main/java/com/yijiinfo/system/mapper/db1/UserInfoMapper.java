@@ -16,7 +16,7 @@ public interface UserInfoMapper {
     UserInfo selectByPrimaryKey(Integer deptId);
 
     int updateHikByPrimaryKey(UserInfo userInfo);
-    int updateAuditByPrimaryKey(UserInfo userInfo);
+    int updateAuditByPersonId(UserInfo userInfo);
     int updateIsNewByPrimaryKey(UserInfo userInfo);
 
     /**

@@ -71,11 +71,11 @@
                 #{idType,jdbcType=INTEGER}, #{idNo,jdbcType=VARCHAR}, #{photo,jdbcType=BLOB}, #{createTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP},
                 #{auditStatus,jdbcType=INTEGER}, #{updateHik,jdbcType=INTEGER}, #{isNew,jdbcType=INTEGER},#{personId,jdbcType=VARCHAR},#{photoScore,jdbcType=INTEGER})
     </insert>
-    <update id="updateAuditByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
+    <update id="updateAuditByPersonId" parameterType="com.yijiinfo.system.model.UserInfo">
         update user_info
         set audit_time = #{auditTime,jdbcType=TIMESTAMP},
             audit_status    = #{auditStatus,jdbcType=INTEGER}
-        where id = #{id,jdbcType=INTEGER}
+        where person_id = #{personId,jdbcType=INTEGER}
     </update>
     <update id="updateHikByPrimaryKey" parameterType="com.yijiinfo.system.model.UserInfo">
         update user_info

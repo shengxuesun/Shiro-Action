@@ -88,15 +88,8 @@
 
 
 <script type="text/html" id="column-toolbar">
-
-    <a lay-event="syncSinglePerson">
-        <i class="layui-icon layui-icon-friends zadmin-oper-area zadmin-blue" title="同步用户"></i>
-    </a>
     <a lay-event="syncSinglePhoto">
         <i class="layui-icon layui-icon-camera zadmin-oper-area zadmin-blue" title="同步人脸"></i>
-    </a>
-    <a lay-event="syncSingleCard">
-        <i class="layui-icon layui-icon-templeate-1 zadmin-oper-area zadmin-blue" title="同步卡片"></i>
     </a>
 </script>
 
@@ -174,7 +167,10 @@
                     // ,{field:'addr',title:'addr'}
                     // ,{field:'zipCode',title:'zipCode'}
                     // ,{field:'cardUpdTime',title:'cardUpdTime'}
-
+                    ,{field:'auditTime',title:'同步时间'}
+                    ,{field:'auditStatus',title:'同步状态',templet:function (d){
+                        return d.auditStatus&&d.auditStatus==1?'已同步':'未同步';
+                    }}
                     ,{field:'photo',title:'人脸照片',templet: function(d){
                         // let blob = new Blob([d.photo],  {type: 'image/jpeg;charset=GBK'});
                         return d.photo?'<div onclick="photograph(this)"><img src="data:image/jpeg;base64,'+d.photo+'"></div>':'';
@@ -212,9 +208,12 @@
                     }
                 );
             } else if (obj.event === 'syncSinglePhoto') {
+                if(obj.data.auditStatus == 1){
+                    return layer.msg("已同步过，无需再同步。");
+                }
                 layer.confirm("确定要同步人脸信息?", {icon: 3, title: '提示'},
                     function (index) {// 确定回调
-                        $.post('/custCardInfo/syncSinglePhoto',obj.data, function (data) {
+                        $.post('/userInfo/syncSinglePhoto',obj.data, function (data) {
                             layer.close(index);
                             handlerResult(data, syncDone);
                         });

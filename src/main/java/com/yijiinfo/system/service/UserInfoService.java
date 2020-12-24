@@ -5,16 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.yijiinfo.system.mapper.db1.DeptMapper;
 import com.yijiinfo.system.mapper.db1.UserInfoMapper;
-import com.yijiinfo.system.model.Dept;
-import com.yijiinfo.system.model.User;
-import com.yijiinfo.system.model.UserInfo;
+import com.yijiinfo.system.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.yijiinfo.MainActionApplication.ARTEMIS_PATH;
 
@@ -24,8 +19,19 @@ public class UserInfoService {
     @Resource
     private UserInfoMapper userInfoMapper;
 
+    @Resource
+    private PhotoService photoService;
+
     public UserInfo insert(UserInfo userInfo) {
         userInfoMapper.insert(userInfo);
+/*        CustCardInfoNew custCardInfo = new CustCardInfoNew();
+        custCardInfo.setCustId(userInfo.getPersonId());
+        custCardInfo.setPhoto(userInfo.getPhoto());
+        JSONObject jsonObject = photoService.syncSinglePhoto(custCardInfo);
+        userInfo.setAuditTime(new Date(System.currentTimeMillis()));
+        userInfo.setAuditStatus(1);
+        userInfoMapper.updateAuditByPersonId(userInfo);
+ */
         return userInfo;
     }
 
@@ -33,8 +39,8 @@ public class UserInfoService {
         return userInfoMapper.deleteByPrimaryKey(id);
     }
 
-    public UserInfo updateAuditByPrimaryKey(UserInfo userInfo) {
-        userInfoMapper.updateAuditByPrimaryKey(userInfo);
+    public UserInfo updateAuditByPersonId(UserInfo userInfo) {
+        userInfoMapper.updateAuditByPersonId(userInfo);
         return userInfo;
     }
 

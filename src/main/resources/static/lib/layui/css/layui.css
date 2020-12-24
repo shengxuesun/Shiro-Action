@@ -1999,7 +1999,7 @@ a cite {
 
 .layui-input,.layui-textarea {
     display: block;
-    width: 66%;
+    width: 60%;
     padding-left: 10px
 }
 
@@ -2106,7 +2106,7 @@ a cite {
 
 .layui-form-select .layui-edge {
     position: absolute;
-    right: 24px;
+    right: 45px;
     top: 50%;
     margin-top: -3px;
     cursor: pointer;
@@ -5280,6 +5280,7 @@ body .layui-util-face .layui-layer-content {
     margin: 0 12px 12px 8px;
     float:left;
     height: 165px;
+    font-size: smaller;
 }
 .photo-upload{
     display: block;

@@ -38,7 +38,8 @@ public class CardController {
     @PostMapping("/syncCard")
     @ResponseBody
     public ResultBean syncCard() {
-        cardService.syncCard();
+//        cardService.syncCard();
+        cardService.syncCardSchedule();
         return ResultBean.success();
     }
 

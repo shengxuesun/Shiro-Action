@@ -7,6 +7,9 @@ import com.yijiinfo.system.model.Card;
 import com.yijiinfo.system.model.CustCardInfo;
 import com.yijiinfo.system.model.SubCard;
 import me.zhyd.oauth.utils.StringUtils;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.yijiinfo.MainActionApplication.ARTEMIS_PATH;
 
+@Configuration
+@EnableScheduling
 @Service
 public class CardService {
 
@@ -37,6 +42,7 @@ public class CardService {
 
     @Transactional
     public void syncCard() {
+
         final String getCamsApi = ARTEMIS_PATH+"/api/cis/v1/card/bindings";
         Map<String, String> path = new HashMap<String, String>(2) {
             {
@@ -56,6 +62,90 @@ public class CardService {
         });
     }
 
+    /***
+     * 1.判断当前要更新的卡号是否跟已经存在的卡号一致，如果一致，则不更新。
+     * 2.如果不一致，果断将第一张卡退卡。
+     * 3.退卡后，再绑这个卡。
+     ***/
+    @Scheduled(cron = "0 0 23 * * *")
+//    @Scheduled(cron = "0 42 17 * * *")
+    @Transactional
+    public void syncCardSchedule() {
+
+        //人员绑卡接口
+        final String getCardBindingApi = ARTEMIS_PATH+"/api/cis/v1/card/bindings";
+        Map<String, String> cardBindingPath = new HashMap<String, String>(2) {
+            {
+                put("https://", getCardBindingApi);//根据现场环境部署确认是http还是https
+            }
+        };
+        //查询已有卡片接口
+        final String getCardListApi = ARTEMIS_PATH+"/api/irds/v1/card/advance/cardList";
+        Map<String, String> cardListPath = new HashMap<String, String>(2) {
+            {
+                put("https://", getCardListApi);//根据现场环境部署确认是http还是https
+            }
+        };
+
+        //退卡接口
+        final String deleteCardApi = ARTEMIS_PATH+"/api/cis/v1/card/deletion";
+        Map<String, String> deleteCardPath = new HashMap<String, String>(2) {
+            {
+                put("https://", deleteCardApi);//根据现场环境部署确认是http还是https
+            }
+        };
+
+        List<CustCardInfo> custCardInfoList = custCardInfoMapper.cardList();
+        AtomicReference<Integer> count = new AtomicReference<>(0);
+        custCardInfoList.stream().forEach(custCardInfo ->{
+            count.getAndSet(count.get() + 1);
+
+            //查询已有卡
+            Card card = transFromCustCardInfo(custCardInfo);
+            List<SubCard> subCardList = card.getCardList();
+            SubCard subCard = subCardList.get(0);
+            String personId = subCard.getPersonId();
+            String toBindCardNo = subCard.getCardNo();
+            String existCardFindBody = "{\"personIds\":\""+personId+"\",\"pageNo\":1,\"pageSize\":100}";
+
+            String findResult = ArtemisHttpUtil.doPostStringArtemis(cardListPath,existCardFindBody,null,null,"application/json",null);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            JSONObject jsonObject = JSONObject.parseObject(findResult);
+            if(jsonObject.getJSONObject("data") != null) {
+                int num = Integer.parseInt(jsonObject.getJSONObject("data").get("total").toString());
+                List<String> existCardNos = new ArrayList<>();
+                if (num > 0) {
+                    List<Object> lists = jsonObject.getJSONObject("data").getObject("list", List.class);
+                    lists.forEach(object->{
+                        existCardNos.add(JSONObject.parseObject(object.toString()).get("cardNo").toString());
+                    });
+                }
+                if(existCardNos.contains(toBindCardNo)){
+                    System.out.println("卡号已存在，无需更新");
+                    return;
+                }else{
+                    //退卡
+                    existCardNos.forEach(cardNo->{
+                        String deleteCardBody = "{\"personId\":\""+personId+"\",\"cardNumber\":\""+cardNo+"\"}";
+                        String deleteResult = ArtemisHttpUtil.doPostStringArtemis(deleteCardPath,deleteCardBody,null,null,"application/json",null);
+                        System.out.println("personId:"+personId+"cardNo:"+cardNo+"退卡成功。"+deleteResult+"");
+                    });
+                    
+                    //绑定新卡
+                    String body = JSONObject.toJSON(card).toString();
+                    String result = ArtemisHttpUtil.doPostStringArtemis(cardBindingPath,JSONObject.toJSON(card).toString(),null,null,"application/json",null);
+                    System.out.println("API Result:"+result);
+                    if(result.indexOf("0x04a12030")!=-1){
+                        System.out.println("the body of the request:"+body);
+                    }                    
+                }
+            }
+        });
+    }
 
     private Card transFromCustCardInfo(CustCardInfo custCardInfo){
         Card card = new Card();

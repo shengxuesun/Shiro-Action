@@ -6,16 +6,23 @@ import com.yijiinfo.system.mapper.db2.CustCardInfoMapper;
 import com.yijiinfo.system.model.CustCardInfo;
 import com.yijiinfo.system.model.Person;
 import me.zhyd.oauth.utils.StringUtils;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.yijiinfo.MainActionApplication.ARTEMIS_PATH;
 import static com.yijiinfo.common.util.DataUtils.transPersonType;
 
+
+@Configuration
+@EnableScheduling
 @Service
 public class PersonService {
 
@@ -52,9 +59,12 @@ public class PersonService {
 
         return JSONObject.parseObject(result);
     }
+
+
+    @Scheduled(cron = "0 50 22 * * *")
     @Transactional
     public void syncPerson() {
-
+        System.out.println("同步人员信息"+ LocalDateTime.now());
         String getCamsApi = ARTEMIS_PATH+"/api/resource/v1/person/batch/add";
         Map<String, String> path = new HashMap<String, String>(2) {
             {

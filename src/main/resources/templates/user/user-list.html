@@ -76,6 +76,11 @@
                 <i class="zadmin-icon zadmin-icon-edit-square zadmin-oper-area zadmin-blue" title="编辑"></i>
             </a>
         </shiro:hasPermission>
+        <shiro:hasPermission name="user:reset">
+            <a lay-event="reset">
+                <i class="zadmin-icon zadmin-icon-edit-square zadmin-oper-area zadmin-blue" title="重置密码"></i>
+            </a>
+        </shiro:hasPermission>
         <shiro:hasPermission name="user:delete">
             <a lay-event="del">
                 <i class="zadmin-icon zadmin-icon-delete zadmin-oper-area zadmin-red" title="删除"></i>

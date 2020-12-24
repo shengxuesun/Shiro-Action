@@ -27,7 +27,7 @@ public class UserInfo implements Serializable {
     private String photo;
     private Date createTime;
     private Integer auditStatus;
-    private Time auditTime;
+    private Date auditTime;
     private Integer updateHik;
     private Integer isNew;
     private String personId;

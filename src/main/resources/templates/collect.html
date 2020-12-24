@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -18,7 +18,7 @@
         <legend>安防数据搜集</legend>
         <form class="layui-form">
         <div class="layui-form-item">
-            <label class="layui-form-label">人员类型：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>人员类型：</label>
             <div class="layui-input-block">
                 <select name="personType" lay-filter="personType" id="personType" lay-verify="required" lay-reqtext="人员类型是必填项">
                     <option value="1">教工</option>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">姓名：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>姓名：</label>
             <div class="layui-input-block">
                 <input type="text" name="username" autocomplete="off" placeholder="请输入姓名" lay-verify="required" lay-reqtext="姓名是必填项" class="layui-input">
             </div>
@@ -296,13 +296,13 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">入学时间：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>入学时间：</label>
             <div class="layui-input-block">
                 <input type="text" name="startDate" id="startDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">证件类型：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>证件类型：</label>
             <div class="layui-input-block">
                 <select name="idType" lay-verify="required" lay-reqtext="证件类型是必填项">
                     <option value="111" selected="">身份证</option>
@@ -317,13 +317,13 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">证件号码：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>证件号码：</label>
             <div class="layui-input-block">
                 <input type="text" name="idNo" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|identity" lay-reqtext="证件号码是必填项">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">人脸信息：</label>
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>人脸信息：</label>
             <div class="layui-input-block" style="line-height: 37px;font-weight: 200">
                 (拍摄或者上传相册图片)
             </div>
@@ -335,6 +335,7 @@
                 <b>角度：</b>必须正面<br/>
                 <b>环境：</b>背景不宜太复杂，尽量选择白色墙面<br/>
                 <b>格式：</b>jpg<br/>
+                <b>(若自拍后格式不对，可拍完后在相册中选择)</b>
             </div>
             <div class="photo-upload">
                 <button type="button" class="layui-btn" id="file">
@@ -381,6 +382,7 @@
             elem: '#file'
             ,url: '/collect/upload' //改成您自己的上传接口
             ,size: 2*1024*1024
+            ,acceptMime: 'image/*'
             ,before: function(obj){
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result){
@@ -389,7 +391,7 @@
                     var fileType = name.substring(index,name.length);
                     var acceptFileTypes = /^jpeg|JPG|jpg|JPEG$/i;
                     if(!acceptFileTypes.test(fileType)){
-                        return layer.msg('不支持该图片格式');
+                        return layer.msg('不支持图片格式'+fileType);
                     }
 
                     $('#demo1').attr('src', result); //图片链接（base64）
@@ -400,7 +402,7 @@
             ,done: function(res){
                 //如果上传失败
                 if(res.code > 0){
-                    return layer.msg('上传失败');
+                    return layer.msg('人脸图片不符合要求，上传失败');
                 }else{
                     if(!res.data.checkResult){
                         $('#photo').attr('value','');
