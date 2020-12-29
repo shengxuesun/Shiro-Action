@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yijiinfo.system.mapper.db1.SmsMapper">
+    <resultMap id="BaseResultMap" type="com.yijiinfo.system.model.Sms">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime"/>
+        <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime"/>
+        <result column="verified" jdbcType="INTEGER" property="verified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        mobile,
+        code,
+        send_time,
+        verified,
+        verify_time
+    </sql>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.yijiinfo.system.model.Sms"
+            useGeneratedKeys="true">
+        insert into sms (mobile,code,send_time,verified)
+        values (#{mobile,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{verified,jdbcType=INTEGER})
+    </insert>
+    <update id="updateVerifiedByMobileCode" parameterType="com.yijiinfo.system.model.Sms">
+        update sms
+        set verified = #{verified,jdbcType=INTEGER},verify_time =#{verifyTime,jdbcType=TIMESTAMP}
+        where mobile = #{mobile,jdbcType=VARCHAR} and code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sms
+    </select>
+
+    <select id="selectLastOneByMobile" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sms
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                AND mobile like concat('%', #{_parameter}, '%')
+            </if>
+        </where>
+        order by id desc limit 1
+    </select>
+
+    <select id="selectAllByQuery" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sms
+        <where>
+            <if test="mobile != null and mobile != ''">
+                AND mobile like concat('%', #{mobile}, '%')
+            </if>
+            <if test="code != null and code != ''">
+                AND code like concat('%', #{code}, '%')
+            </if>
+            <if test="verified != null and verified != ''">
+                AND verified = #{verified}
+            </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(*)
+        from sms
+    </select>
+    <select id="count24Hours" resultType="java.lang.Integer" parameterType="String" >
+        select
+            count(*)
+        from sms
+        <where>
+            <if test="_parameter != null and _parameter != ''">
+                AND mobile like concat('%', #{_parameter}, '%')
+            </if>
+            AND UNIX_TIMESTAMP()-UNIX_TIMESTAMP(send_time) &lt; 86400
+        </where>
+    </select>
+</mapper>

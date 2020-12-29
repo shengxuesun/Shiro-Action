@@ -3,6 +3,8 @@ package com.yijiinfo.hik;
 import com.alibaba.fastjson.JSONObject;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
+import com.yijiinfo.system.model.Sms;
+import com.yijiinfo.system.service.SmsService;
 import com.yijiinfo.system.service.UserInfoService;
 import me.zhyd.oauth.utils.StringUtils;
 import org.apache.http.HttpEntity;
@@ -15,12 +17,6 @@ import java.util.*;
 import static com.yijiinfo.MainActionApplication.ARTEMIS_PATH;
 
 public class ArtemisPostTest {
-
-	static {
-		ArtemisConfig.host = "192.168.1.138";// 代理API网关nginx服务器ip端口
-		ArtemisConfig.appKey = "23732415";// 秘钥appkey
-		ArtemisConfig.appSecret = "gldkaPEjryqRl1cvxpfd";// 秘钥appSecret
-	}
 
 	/**
 	 * 请根据自己的appKey和appSecret更换static静态块中的三个参数. [1 host]
@@ -153,12 +149,13 @@ public class ArtemisPostTest {
 //		0x1f902066 "msg":"pic data error, decompress failed","data":null
 //		0x1f913016 评分失败，重新上传图片。
 
-		JSONObject jsonObject = JSONObject.parseObject("{\"code\":\"0\",\"msg\":\"SUCCESS\",\"data\":{\"total\":59,\"pageNo\":1,\"pageSize\":1,\"list\":[{\"personId\":\"03fc803834c34004add606cc991bdd27\",\"personName\":\"qe\",\"gender\":1,\"orgIndexCode\":\"c01ab7b0-46db-415f-aa0c-540b9d191bdd\",\"phone\":\"13333333333\",\"jobNo\":\"1555\",\"certificateType\":111,\"certificateNo\":\"12313\",\"createTime\":\"2019-06-20T14:19:42.984+08:00\",\"updateTime\":\"2019-07-23T18:41:49.708+08:00\",\"orgPath\":\"@root000000@c01ab7b0-46db-415f-aa0c-540b9d191bdd@\",\"orgPathName\":\"@默认组织@sz@\",\"personPhoto\":[{\"personPhotoIndexCode\":\"1dd742ea-f220-4d63-bffa-fea82441bbba\",\"picUri\":\"/pic?4dd569i90-e*615455166115m6ep=t=i1p*i=d1s*i=d3b*iedd0*9373cb46d-97105f--1544370za33s=1i15=\",\"serverIndexCode\":\"a4b8e993-6d6a-43b0-b3ac-3b2dddf17a45\",\"personId\":\"03fc803834c34004add606cc991bdd27\"}]}]}}");
-		int num = Integer.parseInt(jsonObject.getJSONObject("data").get("total").toString());
-		System.out.println(num);
-		List<Object> lists = jsonObject.getJSONObject("data").getObject("list",List.class);
-//		System.out.println(lists.get(0).toString());
-		System.out.println(JSONObject.parseObject(lists.get(0).toString()).get("personId").toString());
+//		JSONObject jsonObject = JSONObject.parseObject("{\"code\":\"0\",\"msg\":\"SUCCESS\",\"data\":{\"total\":59,\"pageNo\":1,\"pageSize\":1,\"list\":[{\"personId\":\"03fc803834c34004add606cc991bdd27\",\"personName\":\"qe\",\"gender\":1,\"orgIndexCode\":\"c01ab7b0-46db-415f-aa0c-540b9d191bdd\",\"phone\":\"13333333333\",\"jobNo\":\"1555\",\"certificateType\":111,\"certificateNo\":\"12313\",\"createTime\":\"2019-06-20T14:19:42.984+08:00\",\"updateTime\":\"2019-07-23T18:41:49.708+08:00\",\"orgPath\":\"@root000000@c01ab7b0-46db-415f-aa0c-540b9d191bdd@\",\"orgPathName\":\"@默认组织@sz@\",\"personPhoto\":[{\"personPhotoIndexCode\":\"1dd742ea-f220-4d63-bffa-fea82441bbba\",\"picUri\":\"/pic?4dd569i90-e*615455166115m6ep=t=i1p*i=d1s*i=d3b*iedd0*9373cb46d-97105f--1544370za33s=1i15=\",\"serverIndexCode\":\"a4b8e993-6d6a-43b0-b3ac-3b2dddf17a45\",\"personId\":\"03fc803834c34004add606cc991bdd27\"}]}]}}");
+//		int num = Integer.parseInt(jsonObject.getJSONObject("data").get("total").toString());
+//		System.out.println(num);
+//		List<Object> lists = jsonObject.getJSONObject("data").getObject("list",List.class);
+////		System.out.println(lists.get(0).toString());
+//		System.out.println(JSONObject.parseObject(lists.get(0).toString()).get("personId").toString());
+		System.out.println();
 	}
 }
 

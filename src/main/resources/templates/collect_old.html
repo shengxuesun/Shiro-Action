@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>安防数据搜集</title>
+    <link rel="shortcut icon" type="image/x-icon"/>
+    <script th:src="@{/mobile/layer.js}"></script>
+    <link rel="stylesheet" th:href="@{/mobile/need/layer.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}">
+</head>
+
+<body>
+<div class="collect-main">
+    <fieldset class="layui-elem-field-front">
+        <legend>安防数据搜集</legend>
+        <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>人员类型：</label>
+            <div class="layui-input-block">
+                <select name="personType" lay-filter="personType" id="personType" lay-verify="required" lay-reqtext="人员类型是必填项">
+                    <option value="1">教工</option>
+                    <option value="2" selected="">学员</option>
+                    <option value="3">流动人员</option>
+                    <option value="4">其他人员</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" autocomplete="off" placeholder="请输入姓名" lay-verify="required" lay-reqtext="姓名是必填项" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gender" value="1" title="男" checked="">
+                <input type="radio" name="gender" value="2" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item" id="student_no">
+            <label class="layui-form-label">学号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="sno" lay-verify="sno" autocomplete="off" placeholder="请输入学号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" id="student_class">
+            <label class="layui-form-label">班级：</label>
+            <div class="layui-input-block">
+                <select name="classes" lay-verify="classes" lay-search="">
+                    <option value=""></option>
+                    <option value="民航运输2011101">民航运输 2011101</option>
+                    <option value="民航运输2011102">民航运输 2011102</option>
+                    <option value="民航运输2011103">民航运输 2011103</option>
+                    <option value="民航运输2011104">民航运输 2011104</option>
+                    <option value="民航运输2011105">民航运输 2011105</option>
+                    <option value="民航运输2011106">民航运输 2011106</option>
+                    <option value="民航运输2011107">民航运输 2011107</option>
+                    <option value="民航运输2011108">民航运输 2011108</option>
+                    <option value="民航运输2011109">民航运输 2011109</option>
+                    <option value="航空物流2012101">航空物流 2012101</option>
+                    <option value="航空物流2012102">航空物流 2012102</option>
+                    <option value="民航运输民航电子商务2013101">民航运输(民航电子商务)2013101</option>
+                    <option value="民航运输民航电子商务2013102">民航运输(民航电子商务)2013102</option>
+                    <option value="空中乘务2021101">空中乘务 2021101</option>
+                    <option value="空中乘务2021102">空中乘务 2021102</option>
+                    <option value="空中乘务2021103">空中乘务 2021103</option>
+                    <option value="空中乘务2021104">空中乘务 2021104</option>
+                    <option value="空中乘务2021105">空中乘务 2021105</option>
+                    <option value="空中乘务2021106">空中乘务 2021106</option>
+                    <option value="空中乘务2021107">空中乘务 2021107</option>
+                    <option value="空中乘务2021108">空中乘务 2021108</option>
+                    <option value="空中乘务2021109">空中乘务 2021109</option>
+                    <option value="民航空中安全保卫2022101">民航空中安全保卫 2022101</option>
+                    <option value="民航空中安全保卫2022102">民航空中安全保卫 2022102</option>
+                    <option value="民航空中安全保卫2022103">民航空中安全保卫 2022103</option>
+                    <option value="民航空中安全保卫2022104">民航空中安全保卫 2022104</option>
+                    <option value="民航空中安全保卫2022105">民航空中安全保卫 2022105</option>
+                    <option value="民航安全技术管理2031101">民航安全技术管理 2031101</option>
+                    <option value="民航安全技术管理2031102">民航安全技术管理 2031102</option>
+                    <option value="民航安全技术管理2031103">民航安全技术管理 2031103</option>
+                    <option value="民航安全技术管理2031104">民航安全技术管理 2031104</option>
+                    <option value="民航运输航空旅游服务2032101">民航运输(航空旅游服务) 2032101</option>
+                    <option value="民航运输航空旅游服务2032101">民航运输(航空旅游服务) 2032101</option>
+                    <option value="民航运输航空旅游服务2032102">民航运输(航空旅游服务) 2032102</option>
+                    <option value="民航运输航空旅游服务2032102">民航运输(航空旅游服务) 2032102</option>
+                    <option value="民航运输航空旅游服务2032103">民航运输(航空旅游服务) 2032103</option>
+                    <option value="民航运输航空旅游服务2032103">民航运输(航空旅游服务) 2032103</option>
+                    <option value="民航运输航空旅游服务2032104">民航运输(航空旅游服务) 2032104</option>
+                    <option value="民航运输航空旅游服务2032104">民航运输(航空旅游服务) 2032104</option>
+                    <option value="机场运行民航机场气象观测2033101">机场运行(民航机场气象观测) 2033101</option>
+                    <option value="机场运行民航机场气象观测2033102">机场运行(民航机场气象观测) 2033102</option>
+                    <option value="机场运行航空港管理2034101">机场运行(航空港管理) 2034101</option>
+                    <option value="机场运行航空港管理2034102">机场运行(航空港管理) 2034102</option>
+                    <option value="机场运行航空港管理2034103">机场运行(航空港管理) 2034103</option>
+                    <option value="机场运行航空港管理2034104">机场运行(航空港管理) 2034104</option>
+                    <option value="飞机机电设备维修2041101">飞机机电设备维修 2041101</option>
+                    <option value="飞机机电设备维修2041102">飞机机电设备维修 2041102</option>
+                    <option value="飞机机电设备维修2041103">飞机机电设备维修 2041103</option>
+                    <option value="飞机机电设备维修2041104">飞机机电设备维修 2041104</option>
+                    <option value="飞机机电设备维修中外合作办学2041301">飞机机电设备维修(中外合作办学) 2041301</option>
+                    <option value="飞机机电设备维修中外合作办学2041302">飞机机电设备维修(中外合作办学) 2041302</option>
+                    <option value="飞机机电设备维修中外合作办学2041303">飞机机电设备维修(中外合作办学) 2041303</option>
+                    <option value="通用航空器维修直升机维修2042101">通用航空器维修(直升机维修) 2042101</option>
+                    <option value="通用航空器维修直升机维修2042102">通用航空器维修(直升机维修) 2042102</option>
+                    <option value="飞机结构修理2043101">飞机结构修理 2043101</option>
+                    <option value="飞机结构修理2043102">飞机结构修理 2043102</option>
+                    <option value="航空地面设备维修2044101">航空地面设备维修 2044101</option>
+                    <option value="航空地面设备维修2044102">航空地面设备维修 2044102</option>
+                    <option value="飞机电子设备维修2045101">飞机电子设备维修 2045101</option>
+                    <option value="飞机电子设备维修2045102">飞机电子设备维修 2045102</option>
+                    <option value="飞行器制造技术2051101">飞行器制造技术 2051101</option>
+                    <option value="飞行器制造技术2051102">飞行器制造技术 2051102</option>
+                    <option value="飞行器制造技术2051103">飞行器制造技术 2051103</option>
+                    <option value="飞行器制造技术2051104">飞行器制造技术 2051104</option>
+                    <option value="飞行器制造技术通航飞机制造2052101">飞行器制造技术(通航飞机制造) 2052101</option>
+                    <option value="机场运行航空器机坪管制2053101">机场运行(航空器机坪管制) 2053101</option>
+                    <option value="民航运输中高职贯通2011201">民航运输(中高职贯通) 2011201</option>
+                    <option value="民航运输中高职贯通2011202">民航运输(中高职贯通) 2011202</option>
+                    <option value="民航运输中高职贯通2011203">民航运输(中高职贯通) 2011203</option>
+                    <option value="航空物流中高职贯通2012201">航空物流(中高职贯通) 2012201</option>
+                    <option value="航空物流中高职贯通2012202">航空物流(中高职贯通) 2012202</option>
+                    <option value="航空物流中高职贯通2012203">航空物流(中高职贯通) 2012203</option>
+                    <option value="空中乘务中高职贯通2021201">空中乘务(中高职贯通) 2021201</option>
+                    <option value="空中乘务中高职贯通2021202">空中乘务(中高职贯通) 2021202</option>
+                    <option value="空中乘务中高职贯通2021203">空中乘务(中高职贯通) 2021203</option>
+                    <option value="民航安全技术管理中高职贯通2031201">民航安全技术管理(中高职贯通) 2031201</option>
+                    <option value="民航安全技术管理中高职贯通2031202">民航安全技术管理(中高职贯通) 2031202</option>
+                    <option value="飞机机电设备维修中高职贯通2041201">飞机机电设备维修(中高职贯通) 2041201</option>
+                    <option value="飞机机电设备维修中高职贯通2041202">飞机机电设备维修(中高职贯通) 2041202</option>
+                    <option value="航空地面设备维修中高职贯通2044201">航空地面设备维修(中高职贯通) 2044201</option>
+                    <option value="飞机电子设备维修中高职贯通2045201">飞机电子设备维修(中高职贯通) 2045201</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" id="dept" style="display:none">
+            <label class="layui-form-label">部门：</label>
+            <div class="layui-input-block">
+                <select name="department" lay-verify="department" lay-search="">
+                    <option value=""></option>
+                    <option value="109">基础部</option>
+                    <option value="128">图文信息中心</option>
+                    <option value="111">上海外航服务公司</option>
+                    <option value="106100">启武服务公司</option>
+                    <option value="117">上海智尊影视</option>
+                    <option value="112">飞航工贸有限公司</option>
+                    <option value="114">西岸集团</option>
+                    <option value="122104">上海真光旅行社</option>
+                    <option value="108">民航工程系</option>
+                    <option value="120">人事处</option>
+                    <option value="121">党委办公室</option>
+                    <option value="126">航空维修系</option>
+                    <option value="122106">东吴物业</option>
+                    <option value="122103">上房物业</option>
+                    <option value="122102">沪杰保安公司</option>
+                    <option value="122109">华龙物业</option>
+                    <option value="100">校领导</option>
+                    <option value="125">空港管理系</option>
+                    <option value="103">计划财务处</option>
+                    <option value="104">市场部</option>
+                    <option value="106">学生工作处</option>
+                    <option value="107">民航经济管理系</option>
+                    <option value="122">后勤保卫处</option>
+                    <option value="116">万里安飞行服务公司</option>
+                    <option value="123100">福络特保安</option>
+                    <option value="122105">生活园区管理处</option>
+                    <option value="105">教务处</option>
+                    <option value="110">总务处</option>
+                    <option value="127">航空制造系</option>
+                    <option value="122107">景安消防</option>
+                    <option value="101">党群工作部</option>
+                    <option value="102">办公室</option>
+                    <option value="122100">上海为强物业管理有限公司</option>
+                    <option value="115">继续教育部</option>
+                    <option value="118">中航物业</option>
+                    <option value="119">春秋教育培训中心</option>
+                    <option value="122108">心意科技</option>
+                    <option value="123">航空乘务系</option>
+                    <option value="124">航空运输系</option>
+                    <option value="113">工程建设监理公司</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="mobile" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">国籍：</label>
+            <div class="layui-input-block">
+                <select name="country" lay-filter="country">
+                    <option value="CN" selected="">中国</option>
+                    <option value="FN">外国</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">民族：</label>
+            <div class="layui-input-block">
+                <select name="ethnic" lay-filter="ethnic">
+                    <option value="1" selected="">汉族</option>
+                    <option value="2">蒙古族</option>
+                    <option value="3">回族</option>
+                    <option value="4">藏族</option>
+                    <option value="5">维吾尔族</option>
+                    <option value="6">苗族</option>
+                    <option value="7">彝族</option>
+                    <option value="8">壮族</option>
+                    <option value="9">布依族</option>
+                    <option value="10">朝鲜族</option>
+                    <option value="11">满族</option>
+                    <option value="12">侗族</option>
+                    <option value="13">瑶族</option>
+                    <option value="14">白族</option>
+                    <option value="15">土家族</option>
+                    <option value="16">哈尼族</option>
+                    <option value="17">哈萨克族</option>
+                    <option value="18">傣族</option>
+                    <option value="19">黎族</option>
+                    <option value="20">傈僳族</option>
+                    <option value="21">佤族</option>
+                    <option value="22">畲族</option>
+                    <option value="23">高山族</option>
+                    <option value="24">拉祜族</option>
+                    <option value="25">水族</option>
+                    <option value="26">东乡族</option>
+                    <option value="27">纳西族</option>
+                    <option value="28">景颇族</option>
+                    <option value="29">柯尔克孜族</option>
+                    <option value="30">土族</option>
+                    <option value="31">达斡尔族</option>
+                    <option value="32">仫佬族</option>
+                    <option value="33">羌族</option>
+                    <option value="34">布朗族</option>
+                    <option value="35">撒拉族</option>
+                    <option value="36">毛难族</option>
+                    <option value="37">仡佬族</option>
+                    <option value="38">锡伯族</option>
+                    <option value="39">阿昌族</option>
+                    <option value="40">普米族</option>
+                    <option value="41">塔吉克族</option>
+                    <option value="42">怒族</option>
+                    <option value="43">乌孜别克族</option>
+                    <option value="44">俄罗斯族</option>
+                    <option value="45">鄂温克族</option>
+                    <option value="46">崩龙族</option>
+                    <option value="47">保安族</option>
+                    <option value="48">裕固族</option>
+                    <option value="49">京族</option>
+                    <option value="50">塔塔尔族</option>
+                    <option value="51">独龙族</option>
+                    <option value="52">鄂伦春族</option>
+                    <option value="53">赫哲族</option>
+                    <option value="54">门巴族</option>
+                    <option value="55">珞巴族</option>
+                    <option value="56">基诺族</option>
+                    <option value="97">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">宿舍楼号：</label>
+            <div class="layui-input-block">
+                <select name="dorm" lay-filter="dorm">
+                    <option value=""></option>
+                    <option value="PD1-38">浦东1号宿舍(38幢)</option>
+                    <option value="PD1-38">浦东1号宿舍(38幢)</option>
+                    <option value="PD2-37">浦东2号宿舍(37幢)</option>
+                    <option value="PD3-36">浦东3号宿舍(36幢)</option>
+                    <option value="PD3-36">浦东3号宿舍(36幢)</option>
+                    <option value="PD4-35">浦东4号宿舍(35幢)</option>
+                    <option value="PD5-34">浦东5号宿舍(34幢)</option>
+                    <option value="PD5-34">浦东5号宿舍(34幢)</option>
+                    <option value="PD6-33">浦东6号宿舍(33幢)</option>
+                    <option value="PD7-32">浦东7号宿舍(32幢)</option>
+                    <option value="PD7-32">浦东7号宿舍(32幢)</option>
+                    <option value="PD8-31">浦东8号宿舍(31幢)</option>
+                    <option value="PD9-30">浦东9号宿舍(30幢)</option>
+                    <option value="PD9-30">浦东9号宿舍(30幢)</option>
+                    <option value="PD10-29">浦东10号宿舍(29幢)</option>
+                    <option value="PD11-27">浦东11号宿舍(27幢)</option>
+                    <option value="PD11-27">浦东11号宿舍(27幢)</option>
+                    <option value="PD12-26">浦东12号宿舍(26幢)</option>
+                    <option value="PD12-26">浦东12号宿舍(26幢)</option>
+                    <option value="PD13-25">浦东13号宿舍(25幢)</option>
+                    <option value="PD13-25">浦东13号宿舍(25幢)</option>
+                    <option value="PD14-24">浦东14号宿舍(24幢)</option>
+                    <option value="PD14-24">浦东14号宿舍(24幢)</option>
+                    <option value="PD15-23">浦东15号宿舍(23幢)</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>入学时间：</label>
+            <div class="layui-input-block">
+                <input type="text" name="startDate" id="startDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>证件类型：</label>
+            <div class="layui-input-block">
+                <select name="idType" lay-verify="required" lay-reqtext="证件类型是必填项">
+                    <option value="111" selected="">身份证</option>
+                    <option value="414">护照</option>
+                    <option value="113">户口簿</option>
+                    <option value="335">驾驶证</option>
+                    <option value="131">工作证</option>
+                    <option value="133">学生证</option>
+                    <option value="114">军官证</option>
+                    <option value="990">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>证件号码：</label>
+            <div class="layui-input-block">
+                <input type="text" name="idNo" placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required|identity" lay-reqtext="证件号码是必填项">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red;font-weight: bold">*</span>人脸信息：</label>
+            <div class="layui-input-block" style="line-height: 37px;font-weight: 200">
+                (拍摄或者上传相册图片)
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="photo-standard">
+                <b>分辨率：</b>大于480*640<br/>
+                <b>瞳距：</b>40-200<br/>
+                <b>角度：</b>必须正面<br/>
+                <b>环境：</b>背景不宜太复杂，尽量选择白色墙面<br/>
+                <b>格式：</b>jpg<br/>
+                <b>(若自拍后格式不对，可拍完后在相册中选择)</b>
+            </div>
+            <div class="photo-upload">
+                <button type="button" class="layui-btn" id="file">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <input type="hidden" name="photo" id="photo" lay-verify="required"  lay-reqtext="符合要求的人脸图片需要上传">
+                <input type="hidden" name="photoScore" id="photoScore">
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+        <div class="collect-buttons">
+            <div class="layui-input-block">
+                <button type="submit" lay-submit lay-filter="sub" id="sub" class="layui-btn layui-btn-blue">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+    </fieldset>
+</div>
+<script th:src="@{/lib/jquery/jquery.min.js}"></script>
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script>
+    var needRefresh = sessionStorage.getItem("need-refresh");
+    if(needRefresh){
+        sessionStorage.removeItem("need-refresh");
+        location.reload();
+    }
+    layui.use(['form', 'layedit', 'laydate','upload'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate
+            ,upload = layui.upload;
+        //日期
+        laydate.render({
+            elem: '#startDate'
+        });
+        //普通图片上传
+        var layerIndex = null;
+        var uploadInst = upload.render({
+            elem: '#file'
+            ,url: '/collect/upload' //改成您自己的上传接口
+            ,size: 2*1024*1024
+            ,acceptMime: 'image/*'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    var name = file["name"];
+                    var index = name.lastIndexOf(".")+1;
+                    var fileType = name.substring(index,name.length);
+                    var acceptFileTypes = /^jpeg|JPG|jpg|JPEG$/i;
+                    if(!acceptFileTypes.test(fileType)){
+                        return layer.msg('不支持图片格式'+fileType);
+                    }
+
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                    // $('#photo').attr('value',result.split(",")[1]);
+                    $('#sub').attr('disabled','disabled');
+                });
+                layerIndex = layer.load(1,{shade: [0.3, '#000']});
+            }
+            ,done: function(res){
+                layer.close(layerIndex);
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('人脸图片不符合要求，上传失败');
+                }else{
+                    if(!res.data.checkResult){
+                        $('#photo').attr('value','');
+                        return layer.msg('人脸图片审核不通过，请重新按照要求上人脸图片！');
+                    }else{
+                        $('#photo').attr('value',res.photodata);
+                        $('#photoScore').attr('value',res.data.faceScore);
+                        $('#sub').removeAttr('disabled');
+                        return layer.msg('恭喜您，人脸审核通过，您可以继续提交！');
+                    }
+                }
+                //上传成功
+            }
+            ,error: function(){
+                layer.close(layerIndex);
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传出错，请</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+                $('#sub').removeAttr('disabled');
+            }
+        });
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            title: function(value){
+                if(value.length < 5){
+                    return '标题至少得5个字符啊';
+                }
+            }
+            ,pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+        });
+
+        //添加表单监听事件,提交采集信息
+        form.on('submit(sub)', function (data) {
+            $.post('/collect/add', data.field, function (result) {
+                layerIndex = layer.load(1,{shade: [0.3, '#000']});
+                handlerResult(result, collectDone);
+                layer.close(layerIndex)
+            });
+            //防止页面跳转
+            return false;
+        });
+        function collectDone(data) {
+            layer.close(layerIndex)
+            window.location.href = "/collectSuccess";
+            //layer.msg("采集成功!", {icon: 6});
+        }
+        form.on('select(personType)', function(data) {
+            var val = data.value;
+            if(val === "2"){
+                $('#dept').hide();
+                $('#student_no').show();
+                $('#student_class').show();
+            }else{
+                $('#dept').show();
+                $('#student_no').hide();
+                $('#student_class').hide();
+            }
+
+        });
+
+        //表单赋值
+        layui.$('#LAY-component-form-setval').on('click', function(){
+            form.val('example', {
+                "username": "贤心" // "name": "value"
+                ,"password": "123456"
+                ,"interest": 1
+                ,"like[write]": true //复选框选中状态
+                ,"close": true //开关状态
+                ,"sex": "女"
+                ,"desc": "我爱 layui"
+            });
+        });
+
+
+        //表单取值
+        layui.$('#LAY-component-form-getval').on('click', function(){
+            var data = form.val('example');
+            alert(JSON.stringify(data));
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

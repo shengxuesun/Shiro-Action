@@ -2,7 +2,6 @@ package com.yijiinfo.system.model;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
 
 @Data

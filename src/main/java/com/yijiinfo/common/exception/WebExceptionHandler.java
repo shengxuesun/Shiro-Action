@@ -100,9 +100,9 @@ public class WebExceptionHandler {
     @ExceptionHandler
     public String lockedAccount(CaptchaIncorrectException e) {
         if (log.isDebugEnabled()) {
-            log.debug("验证码错误");
+            log.debug("图形验证码不正确！");
         }
-        return generateErrorInfo(ResultBean.FAIL, "验证码错误");
+        return generateErrorInfo(ResultBean.FAIL, "图形验证码不正确！");
     }
 
     @ExceptionHandler

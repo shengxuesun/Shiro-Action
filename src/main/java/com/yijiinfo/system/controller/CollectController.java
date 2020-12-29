@@ -4,13 +4,19 @@ import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.yijiinfo.common.annotation.OperationLog;
+import com.yijiinfo.common.exception.CaptchaIncorrectException;
 import com.yijiinfo.common.shiro.realm.UserNameRealm;
 import com.yijiinfo.common.util.PageResultBean;
 import com.yijiinfo.common.util.ResultBean;
 import com.yijiinfo.system.model.CustCardInfoNew;
+import com.yijiinfo.system.model.Sms;
+import com.yijiinfo.system.model.User;
 import com.yijiinfo.system.model.UserInfo;
 import com.yijiinfo.system.service.*;
 import net.coobird.thumbnailator.Thumbnails;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,16 +57,32 @@ public class CollectController {
     @Resource
     private PhotoService photoService;
 
+    @Resource
+    private SmsService smsService;
+
     @OperationLog("人员信息采集")
     @GetMapping("/collect")
     public String collect() {
         return "collect";
     }
 
+    @OperationLog("人员信息采集v2")
+    @GetMapping("/collect_v2")
+    public String collectV2() {
+
+        return "collect_v2";
+    }
+
     @OperationLog("采集成功")
     @GetMapping("/collectSuccess")
     public String collectSuccess() {
         return "collectSuccess";
+    }
+
+    @OperationLog("采集成功")
+    @GetMapping("/collectSuccessV2")
+    public String collectSuccessV2() {
+        return "collectSuccessV2";
     }
 
     @OperationLog("采集人员")
@@ -83,6 +105,83 @@ public class CollectController {
          * 如果不存在，则调用添加人员的接口，并且更新人脸图片。
          */
         return ResultBean.success(userInfoService.insert(userInfo));
+    }
+
+    @OperationLog("采集人员")
+    @PostMapping("/collect/add3")
+    @ResponseBody
+    public ResultBean add3(UserInfo userInfo, @RequestParam(value = "captcha", required = true) String captcha,@RequestParam(value = "mobileCode",required = true) String mobileCode) {
+
+
+        Sms sms2 = smsService.selectLastOneByMobile("13661509696");
+        System.out.println(sms2.toString());
+        return ResultBean.success("sss");
+    }
+    @OperationLog("采集人员")
+    @PostMapping("/collect/add2")
+    @ResponseBody
+    public ResultBean add2(UserInfo userInfo, @RequestParam(value = "captcha", required = true) String captcha,@RequestParam(value = "mobileCode",required = true) String mobileCode) {
+
+        //校验图形验证码
+        String realCaptcha = (String) SecurityUtils.getSubject().getSession().getAttribute("captcha");
+        // session 中的验证码过期了
+        if (realCaptcha == null || !realCaptcha.equals(captcha.toLowerCase())) {
+            throw new CaptchaIncorrectException();
+        }
+        //校验手机验证码
+        Sms sms = smsService.selectLastOneByMobile(userInfo.getMobile());
+        if(sms == null || !mobileCode.equals(sms.getCode())){
+            return ResultBean.error("手机验证码校验失败，请重试");
+        }else{
+            smsService.updateVerifiedByMobileCode(sms);
+        }
+
+        List<UserInfo> userInfoList = userInfoService.selectByQuery(userInfo);
+        if(userInfoList.size()>0){
+            return ResultBean.error("您的信息已经提交过");
+        }
+        JSONObject checkUserRes = userInfoService.checkUser(userInfo.getUsername(),userInfo.getIdNo());
+        if (Integer.parseInt(checkUserRes.get("number").toString()) == 0){
+            return ResultBean.error("系统不存在相应的用户");
+        }
+        userInfo.setPersonId(checkUserRes.get("personId").toString());
+        userInfo.setCreateTime(new Date(System.currentTimeMillis()));
+        /**
+         * TODO: 查询是否已经存在于海康系统。已经存在的话更新必要信息，包括人脸图片
+         * 如果不存在，则调用添加人员的接口，并且更新人脸图片。
+         */
+        return ResultBean.success(userInfoService.insert(userInfo));
+    }
+
+    @PostMapping("/collect/checkVerify")
+    @ResponseBody
+    public ResultBean checkVerify( @RequestParam(value = "code", required = false) String captcha, @RequestParam(value = "mobile", required = false) String mobile) {
+        String realCaptcha = (String) SecurityUtils.getSubject().getSession().getAttribute("captcha");
+        // session 中的验证码过期了
+        if (realCaptcha == null || !realCaptcha.equals(captcha.toLowerCase())) {
+            throw new CaptchaIncorrectException();
+        }
+        //TODO: 如果24小时内一个手机号发送超过5条，则不能再发送。
+        if(smsService.count24Hours(mobile) > 4){
+            return ResultBean.error("24小时内最多发送5条信息！");
+        }
+        String code = String.valueOf((int) (Math.random() * 9000) + 1000);
+        int res = smsService.sendCode(mobile,code);
+        if(res>0){
+            Sms sms = new Sms();
+            sms.setMobile(mobile);
+            sms.setCode(code);
+            sms.setVerified(0);
+            smsService.insert(sms);
+        }else{
+            System.out.println("发送问题代码："+res);
+            return ResultBean.error("发送失败");
+        }
+        return ResultBean.success("已经发送");
+    }
+
+    public int checkSendTimes(){
+        return smsService.count24Hours("13661509696");
     }
 
     @OperationLog("上传图片")
