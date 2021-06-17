@@ -61,7 +61,7 @@ public class PersonService {
     }
 
 
-    @Scheduled(cron = "0 50 22 * * *")
+    @Scheduled(cron = "0 0/10 7-21 * * *")
     @Transactional
     public void syncPerson() {
         System.out.println("同步人员信息"+ LocalDateTime.now());

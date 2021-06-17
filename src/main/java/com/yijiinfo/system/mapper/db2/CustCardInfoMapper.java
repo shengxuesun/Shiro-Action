@@ -20,7 +20,11 @@ public interface CustCardInfoMapper {
 
     List<CustCardInfo> photoList();
 
+    List<CustCardInfo> photoLate8List();
+
     List<CustCardInfo> cardList();
+
+    List<CustCardInfo> cardLate5List();
 
 
 }

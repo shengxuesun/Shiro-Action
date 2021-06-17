@@ -5,22 +5,3 @@
     \::::_\/    _\::\ \__    \:.\::\ \     _\::\ \__     _\::\ \__    \:. _    \ \   \:::._\/   \:\ \ \ \
       \::\ \   /__\::\__/\    \: \  \ \   /__\::\__/\   /__\::\__/\    \. \`-\  \ \   \:\ \      \:\_\ \ \
        \__\/   \________\/     \_____\/   \________\/   \________\/     \__\/ \__\/    \_\/       \_____\/
-
-            .:,,,,,::...             .:,,,,,::.              .:::.                .::,,,,,::.
-         .:iitjjjjjjjttii;.     ..:;itjjjjjjjjti;:          .,jjjt:.           .,;ijjjjjjjjjti;.
-        :;tjjjjjjjjjjjjjji    . ,itjjjjjjjjjjjjt,.      .  .,tjjjti:         .,ijjjjjjjjjjjjjt,
-        ,tjjjjti;;;ittjjt,     .ijjjjjtti;;;itt;.          :ijjjjjt:         ,itjjjjti;;;iitt;:
-       .ijjjt,.     ...:: .   :;jjjji;.      ..        .  .ijjjjjjj; .      .tjjjji:..      .
-       .tjjjt;..    .        itjjj;                     .;tjjj::tjjj:.    :;jjjj.
-      . ijjjjt;,:.           tjjjt,                     :ijjji.:ijjj,.    ,ijjjt.
-        .,ijjjjjjjj         .jjjj;.                    .jjjj;. .:jjjt:.   ;jjjji
-        . .,;ijjjjjjjjf;..  .jjjj;.                   .;jtf;:   .tjjj,:  .;tjjji
-             ...:,;tjjjji.. .jjjji:                  .;tjjji;;;;;jjfjt,   ;tjjji
-                 ::,jjjjt:. .jjjji,                  :tjjjjtjjjjtjjjjj;   ;tjjjt.
-                   .tjjjt:   ttjjt;             .    ;jjjjjjjjjjjjjjjji   ,ijjjt.
-        .          .ijjjt:   :ttjjj,..             .,jjjt;,,,,,,,,itjjj.   :tjjji,.
-       ...        .:tjjjt:   .itjjji:.            .:;jjj;:.      .,ijjj:   .ijjjji,.
-      .,ttii;,,,,;itjjjt;.    .,jjjjjt;;,,,,;;,   :ijjjt.         .ijjj,.   .ijjjjji;;:::,;;.
-      :;jjjtiiiiitjjjjji:      .ijjjjjjtiiiiti,   ,tjjji.          ;jjj;: .  ,tjjjjjttiiiiti.
-      ;tjjjjjjjjjjjjjt;.        .,;jtjjjjjtji:.  .tjjji,          .,jjtt,.    .,ttjjjjtjjti,
-       .:,;ittjjjt;;:.             .,;itjjjt:    :;;;;:.           .;i;;:.      .:,;ttjjj;..

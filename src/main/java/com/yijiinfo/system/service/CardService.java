@@ -68,10 +68,17 @@ public class CardService {
      * 3.退卡后，再绑这个卡。
      ***/
     @Scheduled(cron = "0 0 23 * * *")
-//    @Scheduled(cron = "0 42 17 * * *")
     @Transactional
     public void syncCardSchedule() {
+        syncCardFunction("ALL");
+    }
 
+    @Scheduled(cron = "0 0/5 7-18 * * *")
+    @Transactional
+    public void syncCardScheduleLate5() {
+        syncCardFunction("5Min");
+    }
+    private void syncCardFunction(String frequency){
         //人员绑卡接口
         final String getCardBindingApi = ARTEMIS_PATH+"/api/cis/v1/card/bindings";
         Map<String, String> cardBindingPath = new HashMap<String, String>(2) {
@@ -95,7 +102,7 @@ public class CardService {
             }
         };
 
-        List<CustCardInfo> custCardInfoList = custCardInfoMapper.cardList();
+        List<CustCardInfo> custCardInfoList = "ALL".equals(frequency)?custCardInfoMapper.cardList(): custCardInfoMapper.cardLate5List();
         AtomicReference<Integer> count = new AtomicReference<>(0);
         custCardInfoList.stream().forEach(custCardInfo ->{
             count.getAndSet(count.get() + 1);
@@ -107,7 +114,7 @@ public class CardService {
             String personId = subCard.getPersonId();
             String toBindCardNo = subCard.getCardNo();
             String existCardFindBody = "{\"personIds\":\""+personId+"\",\"pageNo\":1,\"pageSize\":100}";
-
+            System.out.println("........"+existCardFindBody);
             String findResult = ArtemisHttpUtil.doPostStringArtemis(cardListPath,existCardFindBody,null,null,"application/json",null);
             try {
                 Thread.sleep(100);
@@ -134,19 +141,18 @@ public class CardService {
                         String deleteResult = ArtemisHttpUtil.doPostStringArtemis(deleteCardPath,deleteCardBody,null,null,"application/json",null);
                         System.out.println("personId:"+personId+"cardNo:"+cardNo+"退卡成功。"+deleteResult+"");
                     });
-                    
+
                     //绑定新卡
                     String body = JSONObject.toJSON(card).toString();
                     String result = ArtemisHttpUtil.doPostStringArtemis(cardBindingPath,JSONObject.toJSON(card).toString(),null,null,"application/json",null);
                     System.out.println("API Result:"+result);
                     if(result.indexOf("0x04a12030")!=-1){
                         System.out.println("the body of the request:"+body);
-                    }                    
+                    }
                 }
             }
         });
     }
-
     private Card transFromCustCardInfo(CustCardInfo custCardInfo){
         Card card = new Card();
         card.setStartDate(custCardInfo.getOpenDate().substring(0, 4) + "-" + custCardInfo.getOpenDate().substring(4, 6) + "-" + custCardInfo.getOpenDate().substring(6, 8));

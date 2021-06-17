@@ -186,6 +186,10 @@ select * from
         select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800  and  expiredate > '20201122' and outdate > '20201122'
     </select>
 
+    <select id="photoLate8List" resultMap="BaseResultMap">
+        select custid,photo from v_custcardinfo where DBMS_LOB.GETLENGTH(photo) > 10240 and DBMS_LOB.GETLENGTH(photo) &lt; 204800  and  photoexacttime > to_char(sysdate - interval '8' minute ,'yyyyMMddHH24miss')
+    </select>
+
     <select id="cardList" resultMap="BaseResultMap">
         select
             custid,
@@ -203,6 +207,25 @@ select * from
             specialtycode,
             specialtyname
         from v_custcardinfo where cardstatus = 1 and expiredate > '20201122'
+    </select>
+    <select id="cardLate5List" resultMap="BaseResultMap">
+        select
+            custid,
+            custname,
+            custtype,
+            cardstatus,
+            cardphyid,
+            expiredate,
+            opendate,cardverno,
+            cardtype,cardtypename,
+            cardupdtime,
+            deptcode,
+            sex,
+            deptname,
+            specialtycode,
+            specialtyname,
+            cardupdtime
+        from v_custcardinfo where cardstatus = 1 and cardupdtime > to_char(sysdate - interval '5' minute ,'yyyyMMddHH24miss')
     </select>
 
 </mapper>

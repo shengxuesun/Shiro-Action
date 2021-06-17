@@ -9,6 +9,7 @@ import com.yijiinfo.system.service.UserInfoService;
 import me.zhyd.oauth.utils.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.shiro.crypto.hash.Md5Hash;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
@@ -115,7 +116,8 @@ public class ArtemisPostTest {
 	}
 
 	public static void main(String[] args) {
-
+		String encryptPassword = new Md5Hash("123456", "1608786173574").toString();
+		System.out.println(encryptPassword);
 //		String date1 = "20201209";
 //		String date2 = "20201109";
 //		System.out.println(Integer.parseInt(date1) < Integer.parseInt(date2));
@@ -155,7 +157,6 @@ public class ArtemisPostTest {
 //		List<Object> lists = jsonObject.getJSONObject("data").getObject("list",List.class);
 ////		System.out.println(lists.get(0).toString());
 //		System.out.println(JSONObject.parseObject(lists.get(0).toString()).get("personId").toString());
-		System.out.println();
 	}
 }
 
